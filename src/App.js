@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import UserList from './UserList'
+import * as UserList from './UserList'
 import ItemList from './ItemList'
 import Item from './Item'
 import Reset from './Reset'
@@ -76,11 +76,14 @@ export default class App extends Component {
           <Route path="/products" component={Products} />
           <Route path="/items" component={ItemList} />
           <Route path="/myitems" render={props => <ItemList my={true} {...props} />} />
-          <Route path="/users" component={UserList} />
+          
           <Route path="/register" component={Register} />
           <Route path="/login" component={Login} />
           <Route path="/logout" component={Logout} />
           <Route path="/items/:_id" component={Item} />
+
+          <Route path="/users" component={UserList.all} />
+          <Route path="/user/:_id" component={UserList.details} />
 
           <Route path="/planes" component={Planes.all} />
           <Route path="/plane_create" component={Planes.create} />
