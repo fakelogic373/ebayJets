@@ -23,6 +23,16 @@ export class all extends Component {
     formatListItem(item, i) {
         return (
             <ListItem key={i}>
+
+            {(item.imageUrl)
+                    ? 
+                    <img src={item.imageUrl} width="80" height="80" /> 
+                    :
+                    "No image" }
+
+                
+
+
                 {item.name}, {item.description}, ({item.seller}, {item.expiry})
                 , Bids:
                 <span className='Comma'>
@@ -82,7 +92,7 @@ export class all extends Component {
 
                 }
 
-                
+
 
                 <List className='DataList'>
                     <DataList collection={this.props.my ? 'users/' + db.user._id + '/items' : this.state.query} formatListItem={(item, i) => this.formatListItem(item, i)} />
@@ -208,11 +218,11 @@ export class create extends Component {
 
 
     async handleCreate() {
-        await db.collection('items').createOne({ name: this.state.name ,description: this.state.description, imageUrl: this.state.imageUrl, seller: db.user._id, expiry: this.state.expiry, bids: [] })
+        await db.collection('items').createOne({ name: this.state.name, description: this.state.description, imageUrl: this.state.imageUrl, seller: db.user._id, expiry: this.state.expiry, bids: [] })
         this.setState({ _id: '', description: '', seller: '', expiry: '' })
     }
 
-   
+
 
     render() {
         return (
@@ -223,13 +233,13 @@ export class create extends Component {
                     <div>
                         <p>Add a new bid:</p>
                         <TextField label='Name' value={this.state.name} onChange={e => this.setState({ name: e.target.value })} />
-                        <br/>
+                        <br />
                         <TextField label='Description' value={this.state.description} onChange={e => this.setState({ description: e.target.value })} />
-                        <br/>
+                        <br />
                         <TextField type='date' label='Expiry' value={this.state.expiry} onChange={e => this.setState({ expiry: e.target.value })} />
-                        <br/>
+                        <br />
                         <TextField label='ImageUrl' value={this.state.imageUrl} onChange={e => this.setState({ imageUrl: e.target.value })} />
-                        <br/>
+                        <br />
                         <Button variant="raised" color="primary" size="small" style={{ margin: 3, float: 'right' }} onClick={() => this.handleCreate()} component={Link} to='/planes'>Create</Button>
                     </div>
                 }

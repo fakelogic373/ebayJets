@@ -78,7 +78,7 @@ export default class ItemList extends Component {
             <div style={{ padding: 10, backgroundColor: 'linear-gradient(40deg, #e5adff 50%, #4492ff 90%)' }}>
                 <h2>Items</h2>
                 <aziz.List className='DataList'>
-                    <DataList collection={this.props.my ? 'users/' + db.user._id + '/items' : this.state.query} formatListItem={(item, i) => this.formatListItem(item, i)} />
+                    {/* <DataList collection={this.props.my ? 'users/' + db.user._id + '/items' : this.state.query} formatListItem={(item, i) => this.formatListItem(item, i)} /> */}
                 </aziz.List>
                 <p>Queries:</p>
                 <aziz.TextField label='Item Name' error aria-describedby="name-error-text" value={this.state.search} onChange={e => this.setState({ search: e.target.value })} />
