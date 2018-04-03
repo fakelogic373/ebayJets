@@ -53,7 +53,7 @@ class DB {
             'auth/register',
             {
                 method: 'POST',
-                body: JSON.stringify({ _id, password, likes: [] }),
+                body: JSON.stringify({ _id, password, likes: [], contacts: [],feedbacks: [], messages: []  }),
                 headers: {
                     'Content-Type': 'application/json'
                 }

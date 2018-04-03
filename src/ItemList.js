@@ -5,10 +5,6 @@ import Button from 'material-ui/Button';
 import List, { ListItem, ListItemSecondaryAction } from 'material-ui/List';
 import TextField from 'material-ui/TextField';
 import { Link } from "react-router-dom";
-import * as aziz from 'material-ui'
-// import Delete from 'material-ui-icons/Delete'
-// import FileUpload from 'material-ui-icons/FileUpload'
-// import Save from 'material-ui-icons/Save';
 
 export default class ItemList extends Component {
 
@@ -25,28 +21,28 @@ export default class ItemList extends Component {
 
     formatListItem(item, i) {
         return (
-            <aziz.ListItem key={i}>
+            <ListItem key={i}>
                 {item.description} ({item.seller}, {item.expiry})
                 , Bids:
                 <span className='Comma'>
                     {(item.bids && item.bids.length !== 0) ? item.bids.map((bid, i) => <span key={i}>{bid.amount} ({bid.username})</span>) : <span>None</span>}
                 </span>
-                <aziz.ListItemSecondaryAction>
+                <ListItemSecondaryAction>
                     {
                         db.user
                         &&
                         db.user._id === item.seller
                         &&
-                        <aziz.Button style={{ margin: 3 }} variant='raised' size="small" onClick={() => this.handleDelete(item)}>Delete</aziz.Button>
+                        <Button variant="raised" color="primary" size="small" onClick={() => this.handleDelete(item)}>Delete</Button>
                     }
                     {
                         db.user
                         &&
-                        <aziz.Button style={{ margin: 3 }} variant='raised' size="small" onClick={() => this.handleSelect(item)}>Select</aziz.Button>
+                        <Button variant="raised" color="primary" size="small" onClick={() => this.handleSelect(item)}>Select</Button>
                     }
-                    <Button style={{ margin: 3 }} variant="raised" color="primary" size="small" component={Link} to={`/items/${item._id}`}>Details</Button>
-                </aziz.ListItemSecondaryAction>
-            </aziz.ListItem>
+                    <Button variant="raised" color="primary" size="small" component={Link} to={`/items/${item._id}`}>Details</Button>
+                </ListItemSecondaryAction>
+            </ListItem>
         )
     }
 
@@ -75,23 +71,23 @@ export default class ItemList extends Component {
 
     render() {
         return (
-            <div style={{ padding: 10, backgroundColor: 'linear-gradient(40deg, #e5adff 50%, #4492ff 90%)' }}>
+            <div style={{ padding: 10, backgroundColor: 'pink' }}>
                 <h2>Items</h2>
-                <aziz.List className='DataList'>
-                    {/* <DataList collection={this.props.my ? 'users/' + db.user._id + '/items' : this.state.query} formatListItem={(item, i) => this.formatListItem(item, i)} /> */}
-                </aziz.List>
+                <List className='DataList'>
+                    <DataList collection={this.props.my ? 'users/' + db.user._id + '/items' : this.state.query} formatListItem={(item, i) => this.formatListItem(item, i)} />
+                </List>
                 <p>Queries:</p>
-                <aziz.TextField label='Item Name' error aria-describedby="name-error-text" value={this.state.search} onChange={e => this.setState({ search: e.target.value })} />
-                <aziz.Button style={{ float: 'right' }} color="secondary" variant='raised' onClick={() => this.handleSearchItems()}>Search Items</aziz.Button>
+                <TextField label='Description' value={this.state.search} onChange={e => this.setState({ search: e.target.value })} />
+                <Button variant="raised" color="primary" size="small" style={{ float: 'right' }} onClick={() => this.handleSearchItems()}>Search Items</Button>
                 {
                     db.user
                     &&
                     <div>
                         <p>Operations:</p>
-                        <aziz.TextField label='Description' value={this.state.description} onChange={e => this.setState({ description: e.target.value })} />
-                        <aziz.TextField type='date' label='Expiry' value={this.state.expiry} onChange={e => this.setState({ expiry: e.target.value })} />
-                        <aziz.Button style={{ margin: 3, float: 'right' }} color="primary" variant='raised' onClick={() => this.handleUpdate()}>Update</aziz.Button>
-                        <aziz.Button style={{ margin: 3, float: 'right' }} color="primary" variant='raised' onClick={() => this.handleCreate()}>Create</aziz.Button>
+                        <TextField label='Description' value={this.state.description} onChange={e => this.setState({ description: e.target.value })} />
+                        <TextField type='date' label='Expiry' value={this.state.expiry} onChange={e => this.setState({ expiry: e.target.value })} />
+                        <Button variant="raised" color="primary" size="small" style={{ margin: 3, float: 'right' }} onClick={() => this.handleUpdate()}>Update</Button>
+                        <Button variant="raised" color="primary" size="small" style={{ margin: 3, float: 'right' }} onClick={() => this.handleCreate()}>Create</Button>
                     </div>
                 }
             </div>

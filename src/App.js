@@ -17,6 +17,8 @@ import * as Planes from './planes'
 
 import * as aziz from 'material-ui'
 
+import * as Contacts from './contacts'
+
 import Products from './Products'
 
 
@@ -60,6 +62,9 @@ export default class App extends Component {
                   ?
                   <div>
                     <aziz.Button color="inherit" component={Link} to='/myitems'>{db.user._id}'s Items</aziz.Button>
+
+                    <aziz.Button color="inherit" component={Link} to='/mycontacts'>my contacts</aziz.Button>
+                    
                     <aziz.Button color="inherit" component={Link} to='/users'>Users</aziz.Button>
                     <Reset />
                     <aziz.Button color="inherit" component={Link} to='/logout'>Logout</aziz.Button>
@@ -88,6 +93,8 @@ export default class App extends Component {
           <Route path="/planes" component={Planes.all} />
           <Route path="/plane_create" component={Planes.create} />
           <Route path="/plane_details/:_id" component={Planes.details} />
+
+          <Route path="/mycontacts" component={Contacts.all} />
 
         </div>
       </Router>

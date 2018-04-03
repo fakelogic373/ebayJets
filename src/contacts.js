@@ -45,9 +45,9 @@ export class UserList extends Component {
         return (
             <ListItem key={i}>
                 {user._id}
-                , Likes:
+                , Contacts:
                 <span className='Comma'>
-                    <DataList collection={'users/' + user._id + '/likes'} formatListItem={(item, i) => <span key={i}>{item.description}</span>} />
+                    <DataList collection={'users/' + user._id + '/contact'} formatListItem={(item, i) => <span key={i}>{item.description}</span>} />
                 </span>
                 , Auctions:
                 <span className='Comma'>
@@ -79,7 +79,7 @@ export class UserList extends Component {
         this.setState({ _id: '' })
     }
 
-    async handleFeedback() {
+    async handleUpdate() {
         await db.collection('users').deleteOne(this.state.select._id)
         await db.collection('users').createOne({ _id: this.state._id })
         this.setState({ select: null, _id: '' })
@@ -98,7 +98,7 @@ export class UserList extends Component {
                     <Button variant="raised" color="primary" size="small" style={{ float: 'right' }} onClick={() => this.handleSearchUsers()}>Search Users</Button>
                     <p>Operations:</p>
                     <TextField label='Username' value={this.state._id} onChange={e => this.setState({ _id: e.target.value })} />
-                    <Button size='small' variant="raised" color="primary" style={{ margin: 3, float: 'right' }} onClick={() => this.handleFeedback()}>Update</Button>
+                    <Button size='small' variant="raised" color="primary" style={{ margin: 3, float: 'right' }} onClick={() => this.handleUpdate()}>Update</Button>
                     <Button size='small' variant="raised" color="primary" style={{ margin: 3, float: 'right' }} onClick={() => this.handleCreate()}>Create</Button>
                 </div>
                 {
@@ -157,9 +157,6 @@ export class all extends Component {
                     <Button variant="raised" color="primary" size="small" component={Link} to={`/user/${user._id}`}>View profile page</Button>
                 </ListItemSecondaryAction>
 
-
-
-
             </ListItem>
         )
     }
@@ -182,7 +179,7 @@ export class all extends Component {
         this.setState({ _id: '' })
     }
 
-    async handleFeedback() {
+    async handleUpdate() {
         await db.collection('users').deleteOne(this.state.select._id)
         await db.collection('users').createOne({ _id: this.state._id })
         this.setState({ select: null, _id: '' })
@@ -192,16 +189,21 @@ export class all extends Component {
         return (
             <div>
                 <div style={{ padding: 10, backgroundColor: 'lightgreen' }}>
-                    <h2>Users</h2>
+                    <h2>My contacts List</h2>
                     <List className='DataList'>
                         <DataList collection={this.state.query} formatListItem={(user, i) => this.formatListUser(user, i)} />
                     </List>
+
+                    {/* <List className='DataList'>
+                        <DataList collection={this.props.my ? 'users/' + db.user._id + '/items' : this.state.query} formatListItem={(item, i) => this.formatListItem(item, i)} />
+                    </List> */}
+
                     <p>Queries:</p>
                     <TextField label='Username' value={this.state.search} onChange={e => this.setState({ search: e.target.value })} />
                     <Button variant="raised" color="primary" size="small" style={{ float: 'right' }} onClick={() => this.handleSearchUsers()}>Search Users</Button>
                     <p>Operations:</p>
                     <TextField label='Username' value={this.state._id} onChange={e => this.setState({ _id: e.target.value })} />
-                    <Button size='small' variant="raised" color="primary" style={{ margin: 3, float: 'right' }} onClick={() => this.handleFeedback()}>Update</Button>
+                    <Button size='small' variant="raised" color="primary" style={{ margin: 3, float: 'right' }} onClick={() => this.handleUpdate()}>Update</Button>
                     <Button size='small' variant="raised" color="primary" style={{ margin: 3, float: 'right' }} onClick={() => this.handleCreate()}>Create</Button>
                 </div>
                 {
@@ -224,14 +226,19 @@ export class details extends Component {
     state = {
         search: '',
         select: null,
-        user: [],
         _id: '',
         query: 'users',
+        user: [],
         rate: 0,
         content: '',
         username: '',
         feedbacks: []
     }
+
+    handleChange = event => {
+        this.setState({ [event.target.name]: event.target.value });
+    };
+
 
     componentWillMount() {
         db.setListener('users/' + this.props.match.params._id, this.handleUser)
@@ -287,11 +294,13 @@ export class details extends Component {
         this.setState({ _id: '' })
     }
 
-    async handleFeedback() {
+    async handleUpdate() {
 
         if (db.user._id == null) {
             alert("please log in to leave a comment")
         }
+
+
         let id = db.user._id;
         let feedback = {
             username: id,
@@ -301,49 +310,7 @@ export class details extends Component {
 
         await db.collection('users').deleteOne(this.props.match.params._id)
         await db.collection('users').createOne({ _id: this.props.match.params._id, feedbacks: feedback })
-        ///
-
-        let user = this.state.user
-        // await db.collection('users').replaceOne(user._id, user)
-        await db.collection('users/' + this.state.user._id + '/feedbacks').createOne({ username: db.user._id, content: this.state.content, rating: this.state.rate })
-    }
-
-
-    async handleAddContacts() {
-
-        console.log("user = " + this.state.user)
-
-
-
-        if (db.user._id == null) {
-            alert("please log in ")
-        }
-        let id = db.user._id;
-        let feedback = {
-            username: id,
-            rating: this.state.rate,
-            content: this.state.content,
-        }
-
-        // await db.collection('users').deleteOne(this.props.match.params._id)
-
-        // await db.collection('users').replaceOne(item._id, item)
-
-
-        await db.collection('users/' + db.user._id + '/contacts').createOne({ _id: this.props.match.params._id, name: '' })
-
         this.setState({ select: null, _id: '' })
-    }
-
-    async handleCreate() {
-
-        if (!this.state.item.highbid || (1 * this.state.amount >= this.state.item.highbid)) {
-            let item = this.state.item
-            item.highbid = this.state.amount
-            await db.collection('items').replaceOne(item._id, item)
-            await db.collection('items/' + this.state.item._id + '/bids').createOne({ username: db.user._id, amount: this.state.amount })
-        }
-        this.setState({ amount: '' })
     }
 
 
@@ -352,8 +319,6 @@ export class details extends Component {
         return (
             <div>
                 <div style={{ padding: 10, backgroundColor: 'gold' }}>
-                    <aziz.Button style={{ margin: 3, float: 'right' }} color="primary" variant='raised' component={Link} to='/users' onClick={() => this.handleAddContacts()}>Add the user</aziz.Button>
-
 
                     <h2>{this.props.match.params._id} Profile page</h2>
 
@@ -385,7 +350,7 @@ export class details extends Component {
                         <br />
                         <aziz.TextField label='Message' value={this.state.content} onChange={e => this.setState({ content: e.target.value })} />
                         <br />
-                        <aziz.Button style={{ margin: 3, float: 'right' }} color="primary" variant='raised' component={Link} to='/users' onClick={() => this.handleFeedback()}>Give a feedback</aziz.Button>
+                        <aziz.Button style={{ margin: 3, float: 'right' }} color="primary" variant='raised' onClick={() => this.handleUpdate()}>Give a feedback</aziz.Button>
                     </div>
 
 
