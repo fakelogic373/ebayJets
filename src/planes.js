@@ -23,7 +23,7 @@ export class all extends Component {
     formatListItem(item, i) {
         return (
             <ListItem key={i}>
-                {item.description} ({item.seller}, {item.expiry})
+                {item.name}, {item.description}, ({item.seller}, {item.expiry})
                 , Bids:
                 <span className='Comma'>
                     {(item.bids && item.bids.length !== 0) ? item.bids.map((bid, i) => <span key={i}>{bid.amount} ({bid.username})</span>) : <span>None</span>}
@@ -173,7 +173,9 @@ export class create extends Component {
         expiry: '',
         highbid: '',
         users: [],
-        query: 'items'
+        query: 'items',
+        name: '',
+        imageUrl: ''
     }
 
     formatListItem(item, i) {
@@ -203,28 +205,14 @@ export class create extends Component {
         )
     }
 
-    handleSearchItems() {
-        this.setState({ _id: '', name: '', email: '', query: 'items/description/' + this.state.search })
-    }
 
-    async handleDelete(item) {
-        await db.collection('items').deleteOne(item._id)
-        this.setState({ _id: '', name: '', email: '' })
-    }
 
     async handleCreate() {
-        await db.collection('items').createOne({ description: this.state.description, seller: db.user._id, expiry: this.state.expiry, bids: [] })
+        await db.collection('items').createOne({ name: this.state.name ,description: this.state.description, imageUrl: this.state.imageUrl, seller: db.user._id, expiry: this.state.expiry, bids: [] })
         this.setState({ _id: '', description: '', seller: '', expiry: '' })
     }
 
-    async handleUpdate() {
-        await db.collection('items').replaceOne(this.state.select._id, { _id: this.state.select._id, description: this.state.description, seller: db.user._id, expiry: this.state.expiry, bids: this.state.bids })
-        this.setState({ _id: '', description: '', seller: '', expiry: '' })
-    }
-
-    handleSelect(item) {
-        this.setState({ select: item, _id: item._id, description: item.description, seller: item.seller, expiry: item.expiry, bids: item.bids })
-    }
+   
 
     render() {
         return (
@@ -233,10 +221,15 @@ export class create extends Component {
                     db.user
                     &&
                     <div>
-                        <p>Operations:</p>
+                        <p>Add a new bid:</p>
+                        <TextField label='Name' value={this.state.name} onChange={e => this.setState({ name: e.target.value })} />
+                        <br/>
                         <TextField label='Description' value={this.state.description} onChange={e => this.setState({ description: e.target.value })} />
+                        <br/>
                         <TextField type='date' label='Expiry' value={this.state.expiry} onChange={e => this.setState({ expiry: e.target.value })} />
-                        <Button variant="raised" color="primary" size="small" style={{ margin: 3, float: 'right' }} onClick={() => this.handleUpdate()}>Update</Button>
+                        <br/>
+                        <TextField label='ImageUrl' value={this.state.imageUrl} onChange={e => this.setState({ imageUrl: e.target.value })} />
+                        <br/>
                         <Button variant="raised" color="primary" size="small" style={{ margin: 3, float: 'right' }} onClick={() => this.handleCreate()} component={Link} to='/planes'>Create</Button>
                     </div>
                 }
