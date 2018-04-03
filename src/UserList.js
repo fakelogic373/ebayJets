@@ -7,6 +7,30 @@ import Button from 'material-ui/Button';
 import List, { ListItem, ListItemSecondaryAction } from 'material-ui/List';
 import TextField from 'material-ui/TextField';
 import { Link } from "react-router-dom";
+import * as aziz from 'material-ui'
+
+///
+import PropTypes from 'prop-types';
+import { withStyles } from 'material-ui/styles';
+import Input, { InputLabel } from 'material-ui/Input';
+import { MenuItem } from 'material-ui/Menu';
+import { FormControl, FormHelperText } from 'material-ui/Form';
+import Select from 'material-ui/Select';
+
+const styles = theme => ({
+    root: {
+        display: 'flex',
+        flexWrap: 'wrap',
+    },
+    formControl: {
+        margin: theme.spacing.unit,
+        minWidth: 120,
+    },
+    selectEmpty: {
+        marginTop: theme.spacing.unit * 2,
+    },
+});
+
 
 export class UserList extends Component {
 
@@ -116,16 +140,21 @@ export class all extends Component {
                     <DataList collection={'users/' + user._id + '/items'} formatListItem={(item, i) => <span key={i}>{item.description}</span>} />
                 </span>
 
+                
+                <ListItemSecondaryAction>
                 {
                     db.user
                     &&
-                    <ListItemSecondaryAction>
-                        <Button variant="raised" color="primary" size="small" onClick={() => this.handleDelete(user)}>Delete</Button>
-                        <Button variant="raised" color="primary" size="small" onClick={() => this.handleSelect(user)}>Select</Button>
-                    </ListItemSecondaryAction>
+                    <Button variant="raised" color="primary" size="small" onClick={() => this.handleDelete(user)}>Delete</Button>
                 }
-                <ListItemSecondaryAction>
-                <Button variant="raised" color="primary" size="small" component={Link} to={`/user/${user._id}`}>View profile page</Button>
+                {
+                    db.user
+                    &&
+                    <Button variant="raised" color="primary" size="small" onClick={() => this.handleSelect(user)}>Select</Button>
+                }
+                    
+
+                    <Button variant="raised" color="primary" size="small" component={Link} to={`/user/${user._id}`}>View profile page</Button>
                 </ListItemSecondaryAction>
 
 
@@ -197,10 +226,18 @@ export class details extends Component {
         select: null,
         _id: '',
         query: 'users',
-        user: []
+        user: [],
+        rate: 0,
+        content: '',
+        username: '',
+        feedbacks: []
     }
 
-    
+    handleChange = event => {
+        this.setState({ [event.target.name]: event.target.value });
+    };
+
+
     componentWillMount() {
         //// this is the api url
         db.setListener('users/' + this.props.match.params._id, this.handleUser)
@@ -246,31 +283,75 @@ export class details extends Component {
         this.setState({ select: user, _id: user._id })
     }
 
+    // async handleCreate() {
+    //     await db.collection('users').createOne({ _id: this.state._id, likes: [] })
+    //     this.setState({ _id: '' })
+    // }
+
     async handleCreate() {
         await db.collection('users').createOne({ _id: this.state._id, likes: [] })
         this.setState({ _id: '' })
     }
 
     async handleUpdate() {
-        await db.collection('users').deleteOne(this.state.select._id)
-        await db.collection('users').createOne({ _id: this.state._id })
+
+        if (db.user._id == null) {
+            alert("please log in to leave a comment")
+        }
+
+
+        let id = db.user._id;
+        let feedback = {
+            username: id,
+            rating: this.state.rate,
+            content: this.state.content,
+        }
+
+        await db.collection('users').deleteOne(this.props.match.params._id)
+        await db.collection('users').createOne({ _id: this.props.match.params._id, feedbacks: feedback })
         this.setState({ select: null, _id: '' })
     }
 
+
     render() {
+
         return (
             <div>
                 <div style={{ padding: 10, backgroundColor: 'gold' }}>
-  
+
                     <h2>{this.props.match.params._id} Profile page</h2>
+
+
 
                     <h1>{this.state.user._id}</h1>
                     <h1>{this.state.user.password}</h1>
 
 
-                    {/* <List className='DataList'>
-                        <DataList collection={this.state.query} formatListItem={(user, i) => this.formatListUser(user, i)} />
-                    </List> */}
+
+                    <div style={{ padding: 10, backgroundColor: 'white' }}>
+
+
+                        <FormControl >
+                            <InputLabel>Rate</InputLabel>
+                            <Select
+                                value={this.state.rate}
+                                onChange={e => this.setState({ rate: e.target.value })}
+                            >
+                                <MenuItem value={1}>1</MenuItem>
+                                <MenuItem value={2}>2</MenuItem>
+                                <MenuItem value={3}>3</MenuItem>
+                                <MenuItem value={4}>4</MenuItem>
+                                <MenuItem value={5}>5</MenuItem>
+                            </Select>
+                        </FormControl>
+
+
+                        <br />
+                        <aziz.TextField label='Message' value={this.state.content} onChange={e => this.setState({ content: e.target.value })} />
+                        <br />
+                        <aziz.Button style={{ margin: 3, float: 'right' }} color="primary" variant='raised' onClick={() => this.handleUpdate()}>Give a feedback</aziz.Button>
+                    </div>
+
 
                 </div>
                 {
