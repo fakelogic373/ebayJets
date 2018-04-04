@@ -38,9 +38,21 @@ export class all extends Component {
     state = {
         search: '',
         select: null,
-        _id: '',
-        query: 'users'
+        query: 'users',
+        contactList1: []
     }
+
+
+    componentWillMount() {
+        db.setListener('users/' + db.user._id + '/contacts', this.getContacts1)
+    }
+
+    componentWillUnmount() {
+        db.removeListener('users/' + db.user._id + '/contacts', this.getContacts1)
+    }
+
+
+    getContacts1 = contactList1 => this.setState({ contactList1 })
 
     formatListUser(user, i) {
         return (
@@ -51,7 +63,7 @@ export class all extends Component {
 
                 <ListItemSecondaryAction>
 
-                    <Button variant="raised" color="primary" size="small" component={Link} to={`/messages/${user.username}`}>Block</Button>
+                    <Button variant="raised" color="primary" size="small" onClick={() => this.handleDeleteContact(user.username)} >Remove</Button>
 
 
                     <Button variant="raised" color="primary" size="small" component={Link} to={`/messages/${user.username}`}>Send a message</Button>
@@ -62,29 +74,41 @@ export class all extends Component {
         )
     }
 
-    handleSearchUsers() {
-        this.setState({ _id: '', query: 'users/username/' + this.state.search })
+    // handleSearchUsers() {
+    //     this.setState({ _id: '', query: 'users/username/' + this.state.search })
+    // }
+
+    // async handleDelete(user) {
+    //     await db.collection('users').deleteOne(user._id)
+    //     this.setState({ select: null, _id: '' })
+    // }
+
+    // handleSelect(user) {
+    //     this.setState({ select: user, _id: user._id })
+    // }
+
+    // async handleCreate() {
+    //     await db.collection('users').createOne({ _id: this.state._id, likes: [] })
+    //     this.setState({ _id: '' })
+    // }
+
+    // async handleUpdate() {
+    //     await db.collection('users').deleteOne(this.state.select._id)
+    //     await db.collection('users').createOne({ _id: this.state._id })
+    //     this.setState({ select: null, _id: '' })
+    // }
+
+    async handleDeleteContact(val) {
+        // await db.collection('users').deleteOne(user._id)
+
+        console.log("val = " + val)
+        console.log("user = " + db.user._id)
+        
+        await db.collection('users/' + db.user._id+ '/contacts').deleteOne( val)
+
     }
 
-    async handleDelete(user) {
-        await db.collection('users').deleteOne(user._id)
-        this.setState({ select: null, _id: '' })
-    }
-
-    handleSelect(user) {
-        this.setState({ select: user, _id: user._id })
-    }
-
-    async handleCreate() {
-        await db.collection('users').createOne({ _id: this.state._id, likes: [] })
-        this.setState({ _id: '' })
-    }
-
-    async handleUpdate() {
-        await db.collection('users').deleteOne(this.state.select._id)
-        await db.collection('users').createOne({ _id: this.state._id })
-        this.setState({ select: null, _id: '' })
-    }
+    
 
     render() {
         return (

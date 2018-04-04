@@ -160,6 +160,10 @@ export class details extends Component {
 
     componentWillUnmount() {
         db.removeListener(`users/${this.props.match.params._id}`, this.handleUser)
+        db.removeListener('users/' + this.props.match.params._id + '/feedbacks', this.getFeedback)
+
+        db.removeListener('users/' + db.user._id + '/contacts', this.getContacts1)
+        db.removeListener('users/' + this.props.match.params._id + '/contacts', this.getContacts2)
     }
 
     handleUser = user => this.setState({ user })
@@ -236,26 +240,38 @@ export class details extends Component {
 
         let index1 = this.state.contactList1.findIndex(x => x.username == this.props.match.params._id);
 
+        console.log("index 1: = " + index1)
 
-        if(index1 >= 0){
+
+        if(index1 == -1){
+            // if its find something
+            
+            await db.collection('users/' + db.user._id + '/contacts').createOne({ username: this.state.user._id, isBlocked: 'false' })
+
+            // alert("you have already added the user")
+            // return;
+        }
+
+        if(index1 != -1){
+
             alert("you have already added the user")
             return;
         }
 
 
-        await db.collection('users/' + this.state.user._id + '/contacts').createOne({ username: db.user._id })
 
 
         let index2 = this.state.contactList2.findIndex(x => x.username == id);
 
+        console.log("index 2: = " + index2)
 
-        if(index2 < 0){
-            await db.collection('users/' + db.user._id + '/contacts').createOne({ username: this.state.user._id })
+
+        if(index2 == -1){
+            await db.collection('users/' + this.state.user._id + '/contacts').createOne({ username: db.user._id, isBlocked: 'false' })
+            
         }
 
         this.props.history.push('/mycontacts')
-
-
 
     }
 
