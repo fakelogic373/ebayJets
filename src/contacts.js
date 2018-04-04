@@ -187,10 +187,6 @@ export class all extends Component {
                         <DataList collection={'users/' + db.user._id + '/contacts' } formatListItem={(user, i) => this.formatListUser(user, i)} />
                     </List>
 
-                    {/* <List className='DataList'>
-                        <DataList collection={this.props.my ? 'users/' + db.user._id + '/items' : this.state.query} formatListItem={(item, i) => this.formatListItem(item, i)} />
-                    </List> */}
-
                     <p>Queries:</p>
                     <TextField label='Username' value={this.state.search} onChange={e => this.setState({ search: e.target.value })} />
                     <Button variant="raised" color="primary" size="small" style={{ float: 'right' }} onClick={() => this.handleSearchUsers()}>Search Users</Button>
@@ -276,11 +272,6 @@ export class details extends Component {
     handleSelect(user) {
         this.setState({ select: user, _id: user._id })
     }
-
-    // async handleCreate() {
-    //     await db.collection('users').createOne({ _id: this.state._id, likes: [] })
-    //     this.setState({ _id: '' })
-    // }
 
     async handleCreate() {
         await db.collection('users').createOne({ _id: this.state._id, likes: [] })

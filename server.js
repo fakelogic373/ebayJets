@@ -156,11 +156,8 @@ const setRoutes = async (collection) => {
         })
 
 
-        // create a new bid for a particular item by id
-        // url = POST users/:_id/contacts
 
-
-         // find contacts  by item id
+        //  CONTACTS
          app.get(url + '/:_id/contacts', async (req, res) => {
             const results = await db.collection(collection).findOne({ _id: req.params._id })
             res.json(results.contacts)
@@ -212,14 +209,7 @@ const setRoutes = async (collection) => {
 
         
 
-        /////////////////////
-
-
-        // create a new bid for a particular item by id
-        // url = POST items/:_id/bids
-
-
-        // find feedbacks  by item id
+        // FEEDBACKS
         app.get(url + '/:_id/feedbacks', async (req, res) => {
             const results = await db.collection(collection).findOne({ _id: req.params._id })
             res.json(results.feedbacks)
@@ -265,6 +255,58 @@ const setRoutes = async (collection) => {
             emitFindAll('users')
             emitFindAll('users/' + req.params._id)
             emitFindAll('users/' + req.params._id + '/feedbacks')
+
+            ///
+            //emitFindAll('users/' + req.body.seller + '/items')
+        })
+
+
+        // MESSAGES
+        app.get(url + '/:_id/messages', async (req, res) => {
+            const results = await db.collection(collection).findOne({ _id: req.params._id })
+            res.json(results.messages)
+        })
+
+        
+        app.post(url + '/:_id/messages', async (req, res) => {
+            console.log("yes")
+            const _id = req.params._id
+            const results = await db
+                .collection(collection)
+                .updateOne({ _id }, { $push: { messages: req.body } })
+            res.json(results)
+            emitFindAll('users')
+            emitFindAll('users/' + req.params._id)
+            emitFindAll('users/' + req.params._id + '/messages')
+
+            ///
+            //emitFindAll('users/' + req.body.seller + '/items')
+        })
+
+        app.put(url + '/:_id/messages/:username', async (req, res) => {
+            const _id = req.params._id
+            const results = await db
+                .collection(collection)
+                .updateOne({ _id, 'messages.username': req.params.username }, { $set: { 'messages.$': req.body } })
+            res.json(results)
+            emitFindAll('users')
+            emitFindAll('users/' + req.params._id)
+            emitFindAll('users/' + req.params._id + '/messages')
+
+            ///
+            //emitFindAll('users/' + req.body.seller + '/items')
+        })
+
+        app.delete(url + '/:_id/messages/:username', async (req, res) => {
+            console.log('delete', url)
+            const _id = req.params._id
+            const results = await db
+                .collection(collection)
+                .updateOne({ _id }, { $pull: { messages: { username: req.params.username } } })
+            res.json(results)
+            emitFindAll('users')
+            emitFindAll('users/' + req.params._id)
+            emitFindAll('users/' + req.params._id + '/messages')
 
             ///
             //emitFindAll('users/' + req.body.seller + '/items')

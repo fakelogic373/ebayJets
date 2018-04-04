@@ -19,6 +19,8 @@ import * as aziz from 'material-ui'
 
 import * as Contacts from './contacts'
 
+import * as Messages from './messages'
+
 import Products from './Products'
 
 
@@ -95,6 +97,8 @@ export default class App extends Component {
           <Route path="/plane_details/:_id" component={Planes.details} />
 
           <Route path="/mycontacts" component={Contacts.all} />
+
+          <Route path="/messages/:_id" component={Messages.details} />
 
         </div>
       </Router>

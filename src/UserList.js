@@ -307,9 +307,6 @@ export class details extends Component {
         let id = db.user._id;
 
 
-        // await db.collection('users/' + 'john@test.com'+ '/contacts').createOne({ username: 'xxxxx'})
-
-
         await db.collection('users/' + this.state.user._id + '/contacts').createOne({ username: db.user._id})
         await db.collection('users/' +  db.user._id + '/contacts').createOne({ username: this.state.user._id})
         this.props.history.push('/users')
