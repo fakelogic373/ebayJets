@@ -31,9 +31,8 @@ export class all extends Component {
     formatListUser(user, i) {
         return (
             <ListItem key={i}>
-                
-                {user.username}
 
+                {user.username}
 
                 <ListItemSecondaryAction>
                     {
@@ -46,7 +45,6 @@ export class all extends Component {
                         &&
                         <Button variant="raised" color="primary" size="small" onClick={() => this.handleSelect(user)}>message</Button>
                     }
-
 
                     <Button variant="raised" color="primary" size="small" component={Link} to={`/user/${user._id}`}>View profile page</Button>
                 </ListItemSecondaryAction>
@@ -85,7 +83,7 @@ export class all extends Component {
                 <div style={{ padding: 10, backgroundColor: 'lightgreen' }}>
                     <h2>My contacts List</h2>
                     <List className='DataList'>
-                        <DataList collection={'users/' + db.user._id + '/contacts' } formatListItem={(user, i) => this.formatListUser(user, i)} />
+                        <DataList collection={'users/' + db.user._id + '/contacts'} formatListItem={(user, i) => this.formatListUser(user, i)} />
                     </List>
 
                     <p>Queries:</p>
@@ -110,7 +108,6 @@ export class all extends Component {
         )
     }
 
-
 }
 
 
@@ -118,7 +115,11 @@ export class details extends Component {
 
     state = {
         amount: '',
-        item: null
+        user: null,
+        content: '',
+        from: '',
+        to: '',
+        date: ''
     }
 
     componentWillMount() {
@@ -129,36 +130,45 @@ export class details extends Component {
         db.removeListener(`users/${this.props.match.params._id}`, this.handleItem)
     }
 
-    handleItem = item => this.setState({ item })
+    handleItem = user => this.setState({ user })
 
     formatListItem(message, i) {
         return (
             <ListItem key={i}>
-                Username: {message.from}, Amount: {message.to}
+                from: {message.from}, to: {message.to}, Message: {message.content}
             </ListItem>
         )
     }
 
-    // async handleBid() {
-    //     if (!this.state.item.highbid || (1 * this.state.amount >= this.state.item.highbid)) {
-    //         let item = this.state.item
-    //         item.highbid = this.state.amount
-    //         await db.collection('items').replaceOne(item._id, item)
-    //         await db.collection('items/' + this.state.item._id + '/bids').createOne({ username: db.user._id, amount: this.state.amount })
-    //     }
-    //     this.setState({ amount: '' })
-    // }
+    async handleSend() {
+
+
+        let id = db.user._id;
+        let tempDate = new Date()
+
+        await db.collection('users/' + this.state.user._id + '/messages').createOne({ from: db.user._id , to:this.state.user._id , content: this.state.content, date: tempDate })
+        await db.collection('users/' +  db.user._id + '/messages').createOne({ from: db.user._id , to:this.state.user._id , content: this.state.content, date: tempDate })
+        this.props.history.push('/')
+
+    }
 
     render() {
         return (
-            this.state.item
+            this.state.user
             &&
             <div style={{ padding: 10, backgroundColor: 'lightblue' }}>
                 <List className='DataList'>
                     {/* <DataList collection={'items/' + this.state.item._id + '/messages'} formatListItem={(message, i) => this.formatListItem(message, i)} /> */}
-                    <DataList collection={'users/' + 'maria@test.com'+ '/messages'} formatListItem={(message, i) => this.formatListItem(message, i)} />
+                    <DataList collection={'users/' + db.user._id + '/messages'} formatListItem={(message, i) => this.formatListItem(message, i)} />
                 </List>
-                
+
+                <div style={{ padding: 10, backgroundColor: 'white' }}>
+
+                    <aziz.TextField label='Message' value={this.state.content} onChange={e => this.setState({ content: e.target.value })} />
+                    <br />
+                    <aziz.Button style={{ margin: 3, float: 'right' }} color="primary" variant='raised' onClick={() => this.handleSend()}>Send a message</aziz.Button>
+
+                </div>
             </div>
         )
     }

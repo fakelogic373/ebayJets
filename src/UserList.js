@@ -298,14 +298,10 @@ export class details extends Component {
 
     async handleAddContacts() {
 
-        console.log("Heck yeah baby")
-
-
         if (db.user._id == null) {
             alert("please log in ")
         }
         let id = db.user._id;
-
 
         await db.collection('users/' + this.state.user._id + '/contacts').createOne({ username: db.user._id})
         await db.collection('users/' +  db.user._id + '/contacts').createOne({ username: this.state.user._id})
