@@ -244,22 +244,15 @@ export class details extends Component {
     handleUser = user => this.setState({ user })
 
 
-    formatListUser(user, i) {
+    formatListItem(item, i) {
         return (
             <ListItem key={i}>
-                {user._id}
-                , Likes:
-                <span className='Comma'>
-                    <DataList collection={'users/' + user._id + '/likes'} formatListItem={(item, i) => <span key={i}>{item.description}</span>} />
-                </span>
-                , Auctions:
-                <span className='Comma'>
-                    <DataList collection={'users/' + user._id + '/items'} formatListItem={(item, i) => <span key={i}>{item.description}</span>} />
-                </span>
-                <ListItemSecondaryAction>
-                    <Button variant="raised" color="primary" size="small" onClick={() => this.handleDelete(user)}>Delete</Button>
-                    <Button variant="raised" color="primary" size="small" onClick={() => this.handleSelect(user)}>Select</Button>
-                </ListItemSecondaryAction>
+
+
+  
+                Name : {item.username} , rating:  {item.rating}, Message: {item.content}
+               
+  
             </ListItem>
         )
     }
@@ -298,15 +291,7 @@ export class details extends Component {
             rating: this.state.rate,
             content: this.state.content,
         }
-
-        //await db.collection('users').deleteOne(this.props.match.params._id)
-        //await db.collection('users').createOne({ _id: this.props.match.params._id, feedbacks: feedback })
-        ///
-
-        //let user = this.state.user
-        //await db.collection('users').replaceOne(user._id, user)
-        //await db.collection('users/' + this.state.user._id + '/feedbacks').createOne({ username: db.user._id, content: this.state.content, rating: this.state.rate })
-        await db.collection('users/maria@test.com/feedbacks').createOne({ username: 'khalid@test.com', content: '7567', rating: '1' })
+        await db.collection('users/' + this.state.user._id + '/feedbacks').createOne({ username: db.user._id, content: this.state.content, rating: this.state.rate })
         this.props.history.push('/')
     }
 
@@ -359,12 +344,26 @@ export class details extends Component {
                     <aziz.Button style={{ margin: 3, float: 'right' }} color="primary" variant='raised' component={Link} to='/users' onClick={() => this.handleAddContacts()}>Add the user</aziz.Button>
 
 
+
+
+
                     <h2>{this.props.match.params._id} Profile page</h2>
 
 
 
                     <h1>{this.state.user._id}</h1>
                     <h1>{this.state.user.password}</h1>
+
+                    {/* <List className='DataList'>
+                        <DataList collection={"users/maria@test.com/feedbacks"} formatListItem={(user, i) => this.formatListUser(user, i)} />
+                    </List> */}
+
+                    {/* <DataList collection={'users/' + user._id + '/feedbacks'} formatListItem={(item, i) => <span key={i}>{feedbacks}</span>} /> */}
+
+                    <List className='DataList'>
+                        <DataList collection={'users/' + this.props.match.params._id+ '/feedbacks'} formatListItem={(item, i) => this.formatListItem(item, i)} />
+                    </List>
+
 
 
 

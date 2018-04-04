@@ -43,9 +43,6 @@ export class all extends Component {
                     "No image"
                 }
 
-
-
-
                 {item.name}, {item.description},{item.category},  ({item.seller}, {item.expiry})
                 , Bids:
                 <span className='Comma'>
