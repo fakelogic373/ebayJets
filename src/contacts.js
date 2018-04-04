@@ -130,15 +130,8 @@ export class all extends Component {
     formatListUser(user, i) {
         return (
             <ListItem key={i}>
-                {user._id}
-                , Likes:
-                <span className='Comma'>
-                    <DataList collection={'users/' + user._id + '/likes'} formatListItem={(item, i) => <span key={i}>{item.description}</span>} />
-                </span>
-                , Auctions:
-                <span className='Comma'>
-                    <DataList collection={'users/' + user._id + '/items'} formatListItem={(item, i) => <span key={i}>{item.description}</span>} />
-                </span>
+                
+                {user.username}
 
 
                 <ListItemSecondaryAction>
@@ -150,7 +143,7 @@ export class all extends Component {
                     {
                         db.user
                         &&
-                        <Button variant="raised" color="primary" size="small" onClick={() => this.handleSelect(user)}>Select</Button>
+                        <Button variant="raised" color="primary" size="small" onClick={() => this.handleSelect(user)}>message</Button>
                     }
 
 
@@ -191,7 +184,7 @@ export class all extends Component {
                 <div style={{ padding: 10, backgroundColor: 'lightgreen' }}>
                     <h2>My contacts List</h2>
                     <List className='DataList'>
-                        <DataList collection={this.state.query} formatListItem={(user, i) => this.formatListUser(user, i)} />
+                        <DataList collection={'users/' + db.user._id + '/contacts' } formatListItem={(user, i) => this.formatListUser(user, i)} />
                     </List>
 
                     {/* <List className='DataList'>
