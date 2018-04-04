@@ -171,7 +171,7 @@ const setRoutes = async (collection) => {
             const _id = req.params._id
             const results = await db
                 .collection(collection)
-                .updateOne({ _id }, { $push: { feedbacks: req.body } })
+                .updateOne({ _id }, { $push: { contacts: req.body } })
             res.json(results)
             emitFindAll('users')
             emitFindAll('users/' + req.params._id)
@@ -182,7 +182,7 @@ const setRoutes = async (collection) => {
         })
 
         app.put(url + '/:_id/contacts/:username', async (req, res) => {
-            const _id = new ObjectId(req.params._id)
+            const _id = req.params._id
             const results = await db
                 .collection(collection)
                 .updateOne({ _id, 'contacts.username': req.params.username }, { $set: { 'contacts.$': req.body } })
@@ -197,7 +197,7 @@ const setRoutes = async (collection) => {
 
         app.delete(url + '/:_id/contacts/:username', async (req, res) => {
             console.log('delete', url)
-            const _id = new ObjectId(req.params._id)
+            const _id = req.params._id
             const results = await db
                 .collection(collection)
                 .updateOne({ _id }, { $pull: { contacts: { username: req.params.username } } })
@@ -242,7 +242,7 @@ const setRoutes = async (collection) => {
         })
 
         app.put(url + '/:_id/feedbacks/:username', async (req, res) => {
-            const _id = new ObjectId(req.params._id)
+            const _id = req.params._id
             const results = await db
                 .collection(collection)
                 .updateOne({ _id, 'feedbacks.username': req.params.username }, { $set: { 'feedbacks.$': req.body } })
@@ -257,7 +257,7 @@ const setRoutes = async (collection) => {
 
         app.delete(url + '/:_id/feedbacks/:username', async (req, res) => {
             console.log('delete', url)
-            const _id = new ObjectId(req.params._id)
+            const _id = req.params._id
             const results = await db
                 .collection(collection)
                 .updateOne({ _id }, { $pull: { feedbacks: { username: req.params.username } } })

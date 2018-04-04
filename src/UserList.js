@@ -298,30 +298,22 @@ export class details extends Component {
 
     async handleAddContacts() {
 
-        console.log("user = " + this.state.user)
-
+        console.log("Heck yeah baby")
 
 
         if (db.user._id == null) {
             alert("please log in ")
         }
         let id = db.user._id;
-        let feedback = {
-            username: id,
-            rating: this.state.rate,
-            content: this.state.content,
-        }
-
-        // await db.collection('users').deleteOne(this.props.match.params._id)
-
-        // await db.collection('users').replaceOne(item._id, item)
 
 
-        await db.collection('users/' + db.user._id + '/contacts').createOne({ _id: this.props.match.params._id, name: '' })
+        // await db.collection('users/' + 'john@test.com'+ '/contacts').createOne({ username: 'xxxxx'})
 
-        this.setState({ select: null, _id: '' })
 
-        //props
+        await db.collection('users/' + this.state.user._id + '/contacts').createOne({ username: db.user._id})
+        await db.collection('users/' +  db.user._id + '/contacts').createOne({ username: this.state.user._id})
+        this.props.history.push('/users')
+
     }
 
     async handleCreate() {
@@ -341,7 +333,7 @@ export class details extends Component {
         return (
             <div>
                 <div style={{ padding: 10, backgroundColor: 'gold' }}>
-                    <aziz.Button style={{ margin: 3, float: 'right' }} color="primary" variant='raised' component={Link} to='/users' onClick={() => this.handleAddContacts()}>Add the user</aziz.Button>
+                    <aziz.Button style={{ margin: 3, float: 'right' }} color="primary" variant='raised' onClick={() => this.handleAddContacts()}>Add the user</aziz.Button>
 
 
 
