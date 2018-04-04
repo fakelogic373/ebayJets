@@ -119,11 +119,7 @@ const setRoutes = async (collection) => {
 
 
 
-        // find feedbacks  by item id
-        app.get(url + '/:_id/feedbacks', async (req, res) => {
-            const results = await db.collection(collection).findOne({ _id: req.params._id })
-            res.json(results.feedbacks)
-        })
+        
 
         // find unlikes by user id
         app.get(url + '/:_id/unlikes', async (req, res) => {
@@ -209,8 +205,18 @@ const setRoutes = async (collection) => {
 
         // create a new bid for a particular item by id
         // url = POST items/:_id/bids
+
+
+        // find feedbacks  by item id
+        app.get(url + '/:_id/feedbacks', async (req, res) => {
+            const results = await db.collection(collection).findOne({ _id: req.params._id })
+            res.json(results.feedbacks)
+        })
+
+        
         app.post(url + '/:_id/feedbacks', async (req, res) => {
-            const _id = new ObjectId(req.params._id)
+            console.log("yes")
+            const _id = req.params._id
             const results = await db
                 .collection(collection)
                 .updateOne({ _id }, { $push: { feedbacks: req.body } })
