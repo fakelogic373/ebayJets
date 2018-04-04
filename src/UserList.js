@@ -146,11 +146,13 @@ export class details extends Component {
         rate: 0,
         content: '',
         username: '',
-        feedbacks: []
+        feedbacks: [],
+        feedbacksArr: []
     }
 
     componentWillMount() {
         db.setListener('users/' + this.props.match.params._id, this.handleUser)
+        db.setListener('users/' + this.props.match.params._id + '/feedbacks', this.getFeedback)
     }
 
     componentWillUnmount() {
@@ -159,42 +161,41 @@ export class details extends Component {
 
     handleUser = user => this.setState({ user })
 
+    getFeedback = feedbacksArr => this.setState({ feedbacksArr })
+
 
     formatListItem(item, i) {
         return (
             <ListItem key={i}>
 
-
-  
                 Name : {item.username} , rating:  {item.rating}, Message: {item.content}
-               
-  
+
             </ListItem>
         )
     }
 
-    handleSearchUsers() {
-        this.setState({ _id: '', query: 'users/username/' + this.state.search })
-    }
+    // handleSearchUsers() {
+    //     this.setState({ _id: '', query: 'users/username/' + this.state.search })
+    // }
 
-    async handleDelete(user) {
-        await db.collection('users').deleteOne(user._id)
-        this.setState({ select: null, _id: '' })
-    }
+    // async handleDelete(user) {
+    //     await db.collection('users').deleteOne(user._id)
+    //     this.setState({ select: null, _id: '' })
+    // }
 
-    handleSelect(user) {
-        this.setState({ select: user, _id: user._id })
-    }
+    // handleSelect(user) {
+    //     this.setState({ select: user, _id: user._id })
+    // }
 
     // async handleCreate() {
     //     await db.collection('users').createOne({ _id: this.state._id, likes: [] })
     //     this.setState({ _id: '' })
     // }
 
-    async handleCreate() {
-        await db.collection('users').createOne({ _id: this.state._id, likes: [] })
-        this.setState({ _id: '' })
-    }
+    // async handleCreate() {
+    //     await db.collection('users').createOne({ _id: this.state._id, likes: [] })
+    //     this.setState({ _id: '' })
+    // }
 
     async handleFeedback() {
 
@@ -207,8 +208,28 @@ export class details extends Component {
             rating: this.state.rate,
             content: this.state.content,
         }
+
+        if (this.state.user._id == db.user._id) {
+            alert("you cant give feedback to yourself")
+            return;
+        }
+
+        console.log("feedback = " + this.state.feedbacksArr)
+
+        let index = this.state.feedbacksArr.findIndex(x => x.username == id);
+
+        console.log(index);
+
+        if(index >= 0){
+            alert("you have already rated")
+            return;
+        }
+
+
+
+
         await db.collection('users/' + this.state.user._id + '/feedbacks').createOne({ username: db.user._id, content: this.state.content, rating: this.state.rate })
-        this.props.history.push('/')
+        // this.props.history.push('/')
     }
 
 
@@ -219,22 +240,24 @@ export class details extends Component {
         }
         let id = db.user._id;
 
-        await db.collection('users/' + this.state.user._id + '/contacts').createOne({ username: db.user._id})
-        await db.collection('users/' +  db.user._id + '/contacts').createOne({ username: this.state.user._id})
+        await db.collection('users/' + this.state.user._id + '/contacts').createOne({ username: db.user._id })
+        await db.collection('users/' + db.user._id + '/contacts').createOne({ username: this.state.user._id })
         this.props.history.push('/users')
 
+
+
     }
 
-    async handleCreate() {
+    // async handleCreate() {
 
-        if (!this.state.item.highbid || (1 * this.state.amount >= this.state.item.highbid)) {
-            let item = this.state.item
-            item.highbid = this.state.amount
-            await db.collection('items').replaceOne(item._id, item)
-            await db.collection('items/' + this.state.item._id + '/bids').createOne({ username: db.user._id, amount: this.state.amount })
-        }
-        this.setState({ amount: '' })
-    }
+    //     if (!this.state.item.highbid || (1 * this.state.amount >= this.state.item.highbid)) {
+    //         let item = this.state.item
+    //         item.highbid = this.state.amount
+    //         await db.collection('items').replaceOne(item._id, item)
+    //         await db.collection('items/' + this.state.item._id + '/bids').createOne({ username: db.user._id, amount: this.state.amount })
+    //     }
+    //     this.setState({ amount: '' })
+    // }
 
 
     render() {
@@ -262,7 +285,7 @@ export class details extends Component {
                     {/* <DataList collection={'users/' + user._id + '/feedbacks'} formatListItem={(item, i) => <span key={i}>{feedbacks}</span>} /> */}
 
                     <List className='DataList'>
-                        <DataList collection={'users/' + this.props.match.params._id+ '/feedbacks'} formatListItem={(item, i) => this.formatListItem(item, i)} />
+                        <DataList collection={'users/' + this.props.match.params._id + '/feedbacks'} formatListItem={(item, i) => this.formatListItem(item, i)} />
                     </List>
 
 
