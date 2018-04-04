@@ -29,6 +29,8 @@ import ExpandMoreIcon from 'material-ui-icons/ExpandMore';
 import MoreVertIcon from 'material-ui-icons/MoreVert';
 import Icon from 'material-ui/Icon';
 
+import Ads from './ads'
+
 const styles = theme => ({
     expand: {
       transform: 'rotate(0deg)',
@@ -130,8 +132,29 @@ export class all extends Component {
         category: '',
         query: 'items',
         expanded: false,
-        value: 'recents'
+        value: 'recents',
+        ads: [],
+        user: []
     }
+
+    componentWillMount() {
+        db.setListener('ads/', this.getAds)
+        console.log(this.state.ads)
+        // db.setListener('users/' + this.props.match.params._id, this.handleUser)
+
+
+    }
+
+    componentWillUnmount() {
+        db.removeListener('ads', this.getAds)
+        // db.removeListener('users/' + this.props.match.params._id, this.handleUser)
+
+    }
+
+    getAds= ads => this.setState({ ads })
+    handleUser = user => this.setState({ user })
+
+
 
     handleExpandClick = () => {
         this.setState({ expanded: !this.state.expanded });
@@ -186,6 +209,51 @@ export class all extends Component {
                             
                         </CardActions>
                         
+                    </Card>
+                </div>
+            </center>
+        )
+    }
+
+
+    formatAds(item, i) {
+        const { classes } = this.props;
+        return (
+            <center>
+                <div style={{ paddingTop: 10 }}>
+                    <Card style={{ maxWidth: 1500 }}>
+                        <CardHeader
+                            title={<h1>{item.name}</h1>}
+                            subheader={<h2>{item.category}</h2>}
+                        />
+                        <CardMedia
+                            style={{ height: 800 }}
+                            image={item.imageUrl}
+                            title="Contemplative Reptile"
+                        />
+                    </Card>
+                </div>
+            </center>
+        )
+    }
+
+    formatAds2(item) {
+        const { classes } = this.props;
+        let number = Math.floor(Math.random() * (this.state.ads.length - 0)) + 0;
+        console.log("random number = "+number)
+        return (
+            <center>
+                <div style={{ paddingTop: 10 }}>
+                    <Card style={{ maxWidth: 1500 }}>
+                        <CardHeader
+                            title={<h1>{item.name}</h1>}
+                            subheader={<h2>{item.category}</h2>}
+                        />
+                        <CardMedia
+                            style={{ height: 800 }}
+                            image={item.imageUrl}
+                            title="Contemplative Reptile"
+                        />
                     </Card>
                 </div>
             </center>
@@ -256,6 +324,21 @@ export class all extends Component {
                 <List className='DataList'>
                     <DataList collection={this.props.my ? 'users/' + db.user._id + '/items' : this.state.query} formatListItem={(item, i) => this.formatListItem(item, i)} />
                 </List>
+
+                {/* <List className='DataList'>
+                    <DataList collection={ 'ads'} formatListItem={(item, i) => this.formatAds(item, i)} />
+                </List> */}
+
+                {/* <List className='DataList'>
+                    <DataList collection={ 'ads'} formatListItem={(item) => this.formatAds2(item)} />
+                </List> */}
+
+                <Ads />
+
+                
+            
+
+
 
             </div>
         )

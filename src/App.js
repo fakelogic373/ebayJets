@@ -34,6 +34,9 @@ export default class App extends Component {
     this.authSubscription = db.onAuthStateChanged(user => this.setState({ user }))
   }
 
+
+  
+
   componentWillUnmount() {
     this.authSubscription()
   }
