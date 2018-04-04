@@ -84,34 +84,9 @@ export default class Ads extends React.Component {
                 }
 
 
-
-
-
             </div>
         );
     }
 
-    // render() {
 
-    //     return (
-    //         <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-    //             {/* <Text> Screen 1 </Text>
-    //             <Text> {this.props.userinfo.location} {this.props.userinfo.gender} {this.props.userinfo.age}</Text> */}
-    //             {
-
-    //                 this.state.ads
-    //                     ?
-    //                     // <Text>{this.state.ads[this.state.num].name}</Text>
-    //                     <AdsImage user={this.state.ads[this.state.num].name}/>
-
-    //                     :
-    //                     <Image 
-    //             style={{ width: 300, height: 150}}
-    //             source={require('./images/ad-banner.jpg')}
-    //         />
-    //             }
-
-    //         </View>
-    //     );
-    // }
 }
