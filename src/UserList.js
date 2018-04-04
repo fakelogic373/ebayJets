@@ -245,8 +245,7 @@ export class details extends Component {
 
         if(index1 == -1){
             // if its find something
-            
-            await db.collection('users/' + db.user._id + '/contacts').createOne({ username: this.state.user._id, isBlocked: 'false' })
+            await db.collection('users/' + db.user._id + '/contacts').createOne({ username: this.state.user._id })
 
             // alert("you have already added the user")
             // return;
@@ -267,7 +266,7 @@ export class details extends Component {
 
 
         if(index2 == -1){
-            await db.collection('users/' + this.state.user._id + '/contacts').createOne({ username: db.user._id, isBlocked: 'false' })
+            await db.collection('users/' + this.state.user._id + '/contacts').createOne({ username: db.user._id })
             
         }
 
