@@ -129,11 +129,10 @@ export class all extends Component {
                         value={this.state.search}
                         // onChange={e => this.setState({ search: e.target.value })}
                         onChange={e => this.handleSearchByCategory(e)}
-
                     >
                         <MenuItem value={""}>All</MenuItem>
-                        <MenuItem value={"Jet"}>Jet</MenuItem>
-                        <MenuItem value={"Helicopter"}>Helicopter</MenuItem>
+                        <MenuItem value={"Jet"}>Jets</MenuItem>
+                        <MenuItem value={"Helicopter"}>Helicopters</MenuItem>
                         <MenuItem value={"War Planes"}>War Planes</MenuItem>
                         <MenuItem value={"Commercial Planes"}>Commercial Planes</MenuItem>
                         <MenuItem value={"Amphibian Planes"}>Amphibian Planes</MenuItem>
@@ -142,13 +141,7 @@ export class all extends Component {
 
                 <Button variant="raised" color="primary" size="small" style={{ float: 'right' }} onClick={() => this.handleSearchItems()}>Search Items</Button>
                 <Button variant="raised" color="primary" size="small" style={{ float: 'right' }} onClick={() => this.handleSearchByCategory()}>Search by category</Button>
-
-
-
-
             </div>
-
-
         )
     }
 }
