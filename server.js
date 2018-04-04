@@ -315,6 +315,62 @@ const setRoutes = async (collection) => {
 
     }
 
+    /////////////////////
+
+    if (collection === 'ads') {
+
+        // find items by item name
+        // app.get(url + '/age/:_id', async (req, res) => {
+        //     const results = await db.collection(collection).find({ _id: req.params._id }).toArray()
+        //     res.json(results)
+        // })
+
+        // // find items for auction by seller username
+        // app.get(url + '/:seller/items', async (req, res) => {
+        //     const results = await db.collection('items').find({ seller: req.params.seller }).toArray()
+        //     res.json(results)
+        // })
+
+        // // find expired items for auction by seller username
+        // app.get(url + '/:seller/expired', async (req, res) => {
+        //     const results = await db.collection('expired').find({ seller: req.params.seller }).toArray()
+        //     res.json(results)
+        // })
+
+        // find likes by user id
+        // app.get(url + '/:_id/likes', async (req, res) => {
+        //     const results = await db.collection(collection).findOne({ _id: req.params._id })
+        //     console.log('likes: ', req.params._id, results)
+        //     const items = await Promise.all(results.likes.map(async like => await db.collection('items').findOne({ _id: new ObjectId(like._id) })))
+        //     res.json(items)
+        // })
+
+
+
+        
+
+        // find unlikes by user id
+        // app.get(url + '/:_id/unlikes', async (req, res) => {
+        //     const results = await db.collection(collection).findOne({ _id: req.params._id })
+        //     console.log('likes', results)
+        //     const items = await db.collection('items').find({ _id: { $nin: results.likes.map(item => new ObjectId(item._id)) } }).toArray()
+        //     console.log('unlikes', items)
+        //     res.json(items)
+        // })
+
+
+
+
+
+
+    }
+
+
+
+
+
+    ////////////////////
+
     if (collection === 'items') {
 
         // find items for user
@@ -388,6 +444,8 @@ const setRoutes = async (collection) => {
         res.json(results)
     })
 
+
+
     app.post(url, async (req, res) => {
         console.log(req.body)
         if (req.body._id && collection !== 'users') {
@@ -454,7 +512,7 @@ const setRoutes = async (collection) => {
     })
 
 }
-
+setRoutes('ads')
 setRoutes('items')
 setRoutes('users')
 setRoutes('expired')

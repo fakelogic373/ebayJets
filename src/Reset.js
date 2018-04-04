@@ -34,6 +34,12 @@ export default class Reset extends Component {
             )
         )
 
+        await Promise.all(
+            ads.map(
+                async ads => await db.collection('ads').createOne(ads)
+            )
+        )
+
         const items = [
             { name: 'Dassault Falcon 2000', imageUrl: 'http://www.trendingmotor.com/wp-content/uploads/2016/11/Gulfstream-G-550.jpg', category: 'Jet', description: 'Stunning contemporary interior completed 2017, Customised exterior, Hangered at all times, C-Check accomplished, EASA & FAA Compliant.', seller: 'good@seller.com', buyer: '', expiry: '2018-02-28', highbid: '', bids: [] },
             { name: 'Dassault Falcon 7X', imageUrl: 'http://imgproc.airliners.net/photos/airliners/8/5/3/2360358.jpg?v=v40', category: 'Jet', description: 'One Owner since new, Impeccable cabin interior with elegant design, Low hours, High Speed Swift Broadband Wifi Internet, Engine programs - ESP.', seller: 'bad@seller.com', buyer: '', expiry: '2018-03-29', highbid: 25000000, bids: [{ username: 'Khalid', amount: 25050000 }] },
