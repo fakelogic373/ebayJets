@@ -9,7 +9,7 @@ export default class UserItemList extends Component {
     formatListItem(item, i) {
         return (
             <ListItem key={i}>
-                {item.description}, Highbid: {item.highbid ? item.highbid : 'None'}
+                {item.name}, Highbid: {item.highbid ? item.highbid : 'None'}
                 <ListItemSecondaryAction>
                     <Button variant="raised" color="primary" size="small" onClick={() => this.handleExpireNow(item)}>Expire Now</Button>
                 </ListItemSecondaryAction>
@@ -20,7 +20,7 @@ export default class UserItemList extends Component {
     formatListItemExpired(item, i) {
         return (
             <ListItem key={i}>
-                {item.description}, Highbid: {item.highbid ? item.highbid : 'None'}
+                {item.name}, Highbid: {item.highbid ? item.highbid : 'None'}
                 <ListItemSecondaryAction>
                     <Button variant="raised" color="primary" size="small" onClick={() => this.handleDelete(item)}>Delete</Button>
                 </ListItemSecondaryAction>
