@@ -53,7 +53,7 @@ export default class Ads extends React.Component {
 
         let x = this.state.ads
 
-        let num = Math.random() * (3 - 0) + 0;
+        let num = Math.random() * (4 - 0) + 0;
         num = Math.floor(num);
         console.log(num)
 
@@ -66,6 +66,7 @@ export default class Ads extends React.Component {
                         ?
                         <center>
                             <div style={{ paddingTop: 10 }}>
+                            
                                 <Card style={{ maxWidth: 1500 }}>
                                     <CardHeader
                                         title={<h1></h1>}

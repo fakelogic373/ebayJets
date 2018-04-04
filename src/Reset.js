@@ -22,6 +22,7 @@ export default class Reset extends Component {
 
         const ads = [
             { age:"youngadult", gender:"male", imageUrl:"https://www.advertgallery.com/wp-content/uploads/2016/04/nissan-terrano-toi-mum-8-4-2016.jpg" },
+            { age:"youngadult", gender:"male", imageUrl:"http://payload.cargocollective.com/1/5/163822/2267982/GoldsGym_900.jpg" },
             { age:"youngadult", gender:"female", imageUrl:"https://rioconn.files.wordpress.com/2011/12/final-released-horizontal-ad-cvm-judd_25-3-x-16_06-01-2012.jpg" },
 
             { age:"adult", gender:"female", imageUrl:"https://i.ytimg.com/vi/uxwu-nrHv9A/maxresdefault.jpg" },
