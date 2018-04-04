@@ -159,18 +159,26 @@ const setRoutes = async (collection) => {
         // create a new bid for a particular item by id
         // url = POST users/:_id/contacts
 
+
+         // find contacts  by item id
+         app.get(url + '/:_id/contacts', async (req, res) => {
+            const results = await db.collection(collection).findOne({ _id: req.params._id })
+            res.json(results.contacts)
+        })
+
+        
         app.post(url + '/:_id/contacts', async (req, res) => {
-            const _id = new ObjectId(req.params._id)
+            const _id = req.params._id
             const results = await db
                 .collection(collection)
-                .updateOne({ _id }, { $push: { bids: req.body } })
+                .updateOne({ _id }, { $push: { feedbacks: req.body } })
             res.json(results)
             emitFindAll('users')
             emitFindAll('users/' + req.params._id)
             emitFindAll('users/' + req.params._id + '/contacts')
 
             ///
-            emitFindAll('users/' + req.body.seller + '/items')
+            //emitFindAll('users/' + req.body.seller + '/items')
         })
 
         app.put(url + '/:_id/contacts/:username', async (req, res) => {
@@ -184,7 +192,7 @@ const setRoutes = async (collection) => {
             emitFindAll('users/' + req.params._id + '/contacts')
 
             ///
-            emitFindAll('users/' + req.body.seller + '/items')
+            //emitFindAll('users/' + req.body.seller + '/items')
         })
 
         app.delete(url + '/:_id/contacts/:username', async (req, res) => {
@@ -197,8 +205,12 @@ const setRoutes = async (collection) => {
             emitFindAll('users')
             emitFindAll('users/' + req.params._id)
             emitFindAll('users/' + req.params._id + '/contacts')
-            emitFindAll('users/' + req.body.seller + '/items')
+
+            ///
+            //emitFindAll('users/' + req.body.seller + '/items')
         })
+
+        
 
         /////////////////////
 
