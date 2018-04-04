@@ -46,7 +46,7 @@ export default class LikedList extends Component {
                     <InputLabel>Select Item</InputLabel>
                     <Select native value={this.state._id} onChange={e => this.setState({ _id: e.target.value })} style={{ width: 200 }}>
                         <option></option>
-                        <DataList collection={'users/' + this.props.user._id + '/unlikes'} formatListItem={(item, i) => <option key={i} value={item._id}>{item.description} ({item.seller})</option>} />
+                        <DataList collection={'users/' + this.props.user._id + '/unlikes'} formatListItem={(item, i) => <option key={i} value={item._id}>{item.name} ({item.seller})</option>} />
                     </Select>
                 </FormControl>
                 <Button variant="raised" color="primary" size="small" style={{ margin: 3, float: 'right' }} onClick={() => this.handleCreate()}>Create</Button>
