@@ -210,6 +210,14 @@ export class all extends Component {
                         </CardActions>
                         
                     </Card>
+
+                    {
+                        (i%5)==0 && i!=0
+                        ?
+                        <Ads />
+                        :
+                        <p></p>
+                    }
                 </div>
             </center>
         )
@@ -232,6 +240,8 @@ export class all extends Component {
                             title="Contemplative Reptile"
                         />
                     </Card>
+
+                    
                 </div>
             </center>
         )
@@ -325,13 +335,7 @@ export class all extends Component {
                     <DataList collection={this.props.my ? 'users/' + db.user._id + '/items' : this.state.query} formatListItem={(item, i) => this.formatListItem(item, i)} />
                 </List>
 
-                {/* <List className='DataList'>
-                    <DataList collection={ 'ads'} formatListItem={(item, i) => this.formatAds(item, i)} />
-                </List> */}
-
-                {/* <List className='DataList'>
-                    <DataList collection={ 'ads'} formatListItem={(item) => this.formatAds2(item)} />
-                </List> */}
+ 
 
                 <Ads />
 
