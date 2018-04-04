@@ -148,7 +148,6 @@ export class details extends Component {
 
         await db.collection('users/' + this.state.user._id + '/messages').createOne({ from: db.user._id , to:this.state.user._id , content: this.state.content, date: tempDate })
         await db.collection('users/' +  db.user._id + '/messages').createOne({ from: db.user._id , to:this.state.user._id , content: this.state.content, date: tempDate })
-        this.props.history.push('/')
 
     }
 
