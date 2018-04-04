@@ -32,8 +32,6 @@ const styles = theme => ({
 });
 
 
-
-
 export class all extends Component {
 
     state = {
@@ -147,12 +145,17 @@ export class details extends Component {
         content: '',
         username: '',
         feedbacks: [],
-        feedbacksArr: []
+        feedbacksArr: [],
+        contactList1: [],
+        contactList2: []
     }
 
     componentWillMount() {
         db.setListener('users/' + this.props.match.params._id, this.handleUser)
         db.setListener('users/' + this.props.match.params._id + '/feedbacks', this.getFeedback)
+
+        db.setListener('users/' + db.user._id + '/contacts', this.getContacts1)
+        db.setListener('users/' + this.props.match.params._id + '/contacts', this.getContacts2)
     }
 
     componentWillUnmount() {
@@ -163,39 +166,23 @@ export class details extends Component {
 
     getFeedback = feedbacksArr => this.setState({ feedbacksArr })
 
+    getContacts1 = contactList1 => this.setState({ contactList1 })
+
+    getContacts2 = contactList2 => this.setState({ contactList2 })
+
+
 
     formatListItem(item, i) {
         return (
             <ListItem key={i}>
 
-                Name : {item.username} , rating:  {item.rating}, Message: {item.content}
+                Name : {item.username} , rating:  {item.rating}/5, Message: {item.content}
 
             </ListItem>
         )
     }
 
-    // handleSearchUsers() {
-    //     this.setState({ _id: '', query: 'users/username/' + this.state.search })
-    // }
 
-    // async handleDelete(user) {
-    //     await db.collection('users').deleteOne(user._id)
-    //     this.setState({ select: null, _id: '' })
-    // }
-
-    // handleSelect(user) {
-    //     this.setState({ select: user, _id: user._id })
-    // }
-
-    // async handleCreate() {
-    //     await db.collection('users').createOne({ _id: this.state._id, likes: [] })
-    //     this.setState({ _id: '' })
-    // }
-
-    // async handleCreate() {
-    //     await db.collection('users').createOne({ _id: this.state._id, likes: [] })
-    //     this.setState({ _id: '' })
-    // }
 
     async handleFeedback() {
 
@@ -218,7 +205,6 @@ export class details extends Component {
 
         let index = this.state.feedbacksArr.findIndex(x => x.username == id);
 
-        console.log(index);
 
         if(index >= 0){
             alert("you have already rated")
@@ -229,7 +215,6 @@ export class details extends Component {
 
 
         await db.collection('users/' + this.state.user._id + '/feedbacks').createOne({ username: db.user._id, content: this.state.content, rating: this.state.rate })
-        // this.props.history.push('/')
     }
 
 
@@ -238,27 +223,41 @@ export class details extends Component {
         if (db.user._id == null) {
             alert("please log in ")
         }
+
+
         let id = db.user._id;
 
+
+        if(this.props.match.params._id == id){
+            alert("cant added yourself")
+            return;
+        }
+
+
+        let index1 = this.state.contactList1.findIndex(x => x.username == this.props.match.params._id);
+
+
+        if(index1 >= 0){
+            alert("you have already added the user")
+            return;
+        }
+
+
         await db.collection('users/' + this.state.user._id + '/contacts').createOne({ username: db.user._id })
-        await db.collection('users/' + db.user._id + '/contacts').createOne({ username: this.state.user._id })
-        this.props.history.push('/users')
+
+
+        let index2 = this.state.contactList2.findIndex(x => x.username == id);
+
+
+        if(index2 < 0){
+            await db.collection('users/' + db.user._id + '/contacts').createOne({ username: this.state.user._id })
+        }
+
+        this.props.history.push('/mycontacts')
 
 
 
     }
-
-    // async handleCreate() {
-
-    //     if (!this.state.item.highbid || (1 * this.state.amount >= this.state.item.highbid)) {
-    //         let item = this.state.item
-    //         item.highbid = this.state.amount
-    //         await db.collection('items').replaceOne(item._id, item)
-    //         await db.collection('items/' + this.state.item._id + '/bids').createOne({ username: db.user._id, amount: this.state.amount })
-    //     }
-    //     this.setState({ amount: '' })
-    // }
-
 
     render() {
 

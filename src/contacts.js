@@ -50,20 +50,11 @@ export class all extends Component {
 
 
                 <ListItemSecondaryAction>
-                    {/* {
-                        db.user
-                        &&
-                        <Button variant="raised" color="primary" size="small" onClick={() => this.handleDelete(user)}>Delete</Button>
-                    }
-                    {
-                        db.user
-                        &&
-                        <Button variant="raised" color="primary" size="small" onClick={() => this.handleSelect(user)}>message</Button>
-                    } */}
+
+                    <Button variant="raised" color="primary" size="small" component={Link} to={`/messages/${user.username}`}>Block</Button>
 
 
-                    {/* <Button variant="raised" color="primary" size="small" component={Link} to={`/user/${user._id}`}>Message</Button> */}
-                    <Button variant="raised" color="primary" size="small" component={Link} to={`/messages/${user.username}`}>View Bids/Details</Button>
+                    <Button variant="raised" color="primary" size="small" component={Link} to={`/messages/${user.username}`}>Send a message</Button>
 
                 </ListItemSecondaryAction>
 
@@ -103,14 +94,6 @@ export class all extends Component {
                     <List className='DataList'>
                         <DataList collection={'users/' + db.user._id + '/contacts'} formatListItem={(user, i) => this.formatListUser(user, i)} />
                     </List>
-
-                    <p>Queries:</p>
-                    <TextField label='Username' value={this.state.search} onChange={e => this.setState({ search: e.target.value })} />
-                    <Button variant="raised" color="primary" size="small" style={{ float: 'right' }} onClick={() => this.handleSearchUsers()}>Search Users</Button>
-                    <p>Operations:</p>
-                    <TextField label='Username' value={this.state._id} onChange={e => this.setState({ _id: e.target.value })} />
-                    <Button size='small' variant="raised" color="primary" style={{ margin: 3, float: 'right' }} onClick={() => this.handleUpdate()}>Update</Button>
-                    <Button size='small' variant="raised" color="primary" style={{ margin: 3, float: 'right' }} onClick={() => this.handleCreate()}>Create</Button>
                 </div>
                 {
                     this.state.select
