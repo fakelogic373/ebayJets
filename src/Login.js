@@ -5,7 +5,7 @@ import Button from 'material-ui/Button';
 export default class Login extends Component {
 
     state = {
-        email: 'john@test.com',
+        email: 'good@seller.com',
         password: '123456'
     }
 
