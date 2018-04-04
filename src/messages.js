@@ -18,40 +18,39 @@ import { FormControl, FormHelperText } from 'material-ui/Form';
 import Select from 'material-ui/Select';
 
 
-export class details extends Component {
+
+export class all extends Component {
 
     state = {
         search: '',
         select: null,
-        user: [],
         _id: '',
-        query: 'users',
-        rate: 0,
-        content: '',
-        username: '',
-        feedbacks: []
+        query: 'users'
     }
 
-    componentWillMount() {
-        db.setListener('users/' + this.props.match.params._id, this.handleUser)
-    }
-
-    componentWillUnmount() {
-        db.removeListener(`users/${this.props.match.params._id}`, this.handleUser)
-    }
-
-    handleUser = user => this.setState({ user })
-
-
-    formatListItem(item, i) {
+    formatListUser(user, i) {
         return (
             <ListItem key={i}>
+                
+                {user.username}
 
 
-  
-                Name : {item.username} , rating:  {item.rating}, Message: {item.content}
-               
-  
+                <ListItemSecondaryAction>
+                    {
+                        db.user
+                        &&
+                        <Button variant="raised" color="primary" size="small" onClick={() => this.handleDelete(user)}>Delete</Button>
+                    }
+                    {
+                        db.user
+                        &&
+                        <Button variant="raised" color="primary" size="small" onClick={() => this.handleSelect(user)}>message</Button>
+                    }
+
+
+                    <Button variant="raised" color="primary" size="small" component={Link} to={`/user/${user._id}`}>View profile page</Button>
+                </ListItemSecondaryAction>
+
             </ListItem>
         )
     }
@@ -69,115 +68,96 @@ export class details extends Component {
         this.setState({ select: user, _id: user._id })
     }
 
-  
-
     async handleCreate() {
         await db.collection('users').createOne({ _id: this.state._id, likes: [] })
         this.setState({ _id: '' })
     }
 
-    async handleFeedback() {
-
-        if (db.user._id == null) {
-            alert("please log in to leave a comment")
-        }
-        let id = db.user._id;
-        let feedback = {
-            username: id,
-            rating: this.state.rate,
-            content: this.state.content,
-        }
-        await db.collection('users/' + this.state.user._id + '/feedbacks').createOne({ username: db.user._id, content: this.state.content, rating: this.state.rate })
-        this.props.history.push('/')
+    async handleUpdate() {
+        await db.collection('users').deleteOne(this.state.select._id)
+        await db.collection('users').createOne({ _id: this.state._id })
+        this.setState({ select: null, _id: '' })
     }
-
-
-    async handleAddContacts() {
-
-        console.log("Heck yeah baby")
-
-
-        if (db.user._id == null) {
-            alert("please log in ")
-        }
-        let id = db.user._id;
-
-
-        await db.collection('users/' + this.state.user._id + '/contacts').createOne({ username: db.user._id})
-        await db.collection('users/' +  db.user._id + '/contacts').createOne({ username: this.state.user._id})
-        this.props.history.push('/users')
-
-    }
-
-    async handleCreate() {
-
-        if (!this.state.item.highbid || (1 * this.state.amount >= this.state.item.highbid)) {
-            let item = this.state.item
-            item.highbid = this.state.amount
-            await db.collection('items').replaceOne(item._id, item)
-            await db.collection('items/' + this.state.item._id + '/bids').createOne({ username: db.user._id, amount: this.state.amount })
-        }
-        this.setState({ amount: '' })
-    }
-
 
     render() {
-
         return (
             <div>
-                <div style={{ padding: 10, backgroundColor: 'gold' }}>
-                    <aziz.Button style={{ margin: 3, float: 'right' }} color="primary" variant='raised' onClick={() => this.handleAddContacts()}>Add the user</aziz.Button>
-
-
-
-
-
-                    <h2>{this.props.match.params._id} Profile page</h2>
-
-
-
-                    <h1>{this.state.user._id}</h1>
-                    <h1>{this.state.user.password}</h1>
-
-                    {/* <List className='DataList'>
-                        <DataList collection={"users/maria@test.com/feedbacks"} formatListItem={(user, i) => this.formatListUser(user, i)} />
-                    </List> */}
-
-                    {/* <DataList collection={'users/' + user._id + '/feedbacks'} formatListItem={(item, i) => <span key={i}>{feedbacks}</span>} /> */}
-
+                <div style={{ padding: 10, backgroundColor: 'lightgreen' }}>
+                    <h2>My contacts List</h2>
                     <List className='DataList'>
-                        <DataList collection={'users/' + this.props.match.params._id+ '/messages'} formatListItem={(item, i) => this.formatListItem(item, i)} />
+                        <DataList collection={'users/' + db.user._id + '/contacts' } formatListItem={(user, i) => this.formatListUser(user, i)} />
                     </List>
 
-
-
-
-                    <div style={{ padding: 10, backgroundColor: 'white' }}>
-
-
-                        <FormControl >
-                            <InputLabel>Rate</InputLabel>
-                            <Select
-                                value={this.state.rate}
-                                onChange={e => this.setState({ rate: e.target.value })}
-                            >
-                                <MenuItem value={1}>1</MenuItem>
-                                <MenuItem value={2}>2</MenuItem>
-                                <MenuItem value={3}>3</MenuItem>
-                                <MenuItem value={4}>4</MenuItem>
-                                <MenuItem value={5}>5</MenuItem>
-                            </Select>
-                        </FormControl>
-
-
-                        <br />
-                        <aziz.TextField label='Message' value={this.state.content} onChange={e => this.setState({ content: e.target.value })} />
-                        <br />
-                        <aziz.Button style={{ margin: 3, float: 'right' }} color="primary" variant='raised' onClick={() => this.handleFeedback()}>Send</aziz.Button>
-                    </div>
-
-
+                    <p>Queries:</p>
+                    <TextField label='Username' value={this.state.search} onChange={e => this.setState({ search: e.target.value })} />
+                    <Button variant="raised" color="primary" size="small" style={{ float: 'right' }} onClick={() => this.handleSearchUsers()}>Search Users</Button>
+                    <p>Operations:</p>
+                    <TextField label='Username' value={this.state._id} onChange={e => this.setState({ _id: e.target.value })} />
+                    <Button size='small' variant="raised" color="primary" style={{ margin: 3, float: 'right' }} onClick={() => this.handleUpdate()}>Update</Button>
+                    <Button size='small' variant="raised" color="primary" style={{ margin: 3, float: 'right' }} onClick={() => this.handleCreate()}>Create</Button>
                 </div>
+                {
+                    this.state.select
+                        ?
+                        <div>
+                            <UserItemList user={this.state.select} />
+                            <LikedList user={this.state.select} />
+                        </div>
+                        :
+                        <div></div>
+                }
+            </div>
+        )
+    }
+
+
+}
+
+
+export class details extends Component {
+
+    state = {
+        amount: '',
+        item: null
+    }
+
+    componentWillMount() {
+        db.setListener('users/' + this.props.match.params._id, this.handleItem)
+    }
+
+    componentWillUnmount() {
+        db.removeListener(`users/${this.props.match.params._id}`, this.handleItem)
+    }
+
+    handleItem = item => this.setState({ item })
+
+    formatListItem(message, i) {
+        return (
+            <ListItem key={i}>
+                Username: {message.from}, Amount: {message.to}
+            </ListItem>
+        )
+    }
+
+    // async handleBid() {
+    //     if (!this.state.item.highbid || (1 * this.state.amount >= this.state.item.highbid)) {
+    //         let item = this.state.item
+    //         item.highbid = this.state.amount
+    //         await db.collection('items').replaceOne(item._id, item)
+    //         await db.collection('items/' + this.state.item._id + '/bids').createOne({ username: db.user._id, amount: this.state.amount })
+    //     }
+    //     this.setState({ amount: '' })
+    // }
+
+    render() {
+        return (
+            this.state.item
+            &&
+            <div style={{ padding: 10, backgroundColor: 'lightblue' }}>
+                <List className='DataList'>
+                    {/* <DataList collection={'items/' + this.state.item._id + '/messages'} formatListItem={(message, i) => this.formatListItem(message, i)} /> */}
+                    <DataList collection={'users/' + 'maria@test.com'+ '/messages'} formatListItem={(message, i) => this.formatListItem(message, i)} />
+                </List>
                 
             </div>
         )

@@ -135,7 +135,7 @@ export class all extends Component {
 
 
                 <ListItemSecondaryAction>
-                    {
+                    {/* {
                         db.user
                         &&
                         <Button variant="raised" color="primary" size="small" onClick={() => this.handleDelete(user)}>Delete</Button>
@@ -144,10 +144,12 @@ export class all extends Component {
                         db.user
                         &&
                         <Button variant="raised" color="primary" size="small" onClick={() => this.handleSelect(user)}>message</Button>
-                    }
+                    } */}
 
 
-                    <Button variant="raised" color="primary" size="small" component={Link} to={`/user/${user._id}`}>View profile page</Button>
+                    {/* <Button variant="raised" color="primary" size="small" component={Link} to={`/user/${user._id}`}>Message</Button> */}
+                    <Button variant="raised" color="primary" size="small" component={Link} to={`/messages/${user.username}`}>View Bids/Details</Button>
+
                 </ListItemSecondaryAction>
 
             </ListItem>
