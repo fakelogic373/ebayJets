@@ -1,151 +1,3 @@
-////////////////////////////////////////////////Buttons
-// import React from 'react';
-// import PropTypes from 'prop-types';
-// import { withStyles } from 'material-ui/styles';
-// import ButtonBase from 'material-ui/ButtonBase';
-// import Typography from 'material-ui/Typography';
-
-
-
-// const styles = theme => ({
-//   root: {
-//     display: 'flex',
-//     flexWrap: 'wrap',
-//     minWidth: 300,
-//     width: '100%',
-//   },
-//   image: {
-//     position: 'relative',
-//     height: 200,
-//     [theme.breakpoints.down('xs')]: {
-//       width: '100% !important', // Overrides inline-style
-//       height: 100,
-//     },
-//     '&:hover': {
-//       zIndex: 1,
-//     },
-//     '&:hover $imageBackdrop': {
-//       opacity: 0.15,
-//     },
-//     '&:hover $imageMarked': {
-//       opacity: 0,
-//     },
-//     '&:hover $imageTitle': {
-//       border: '4px solid currentColor',
-//     },
-//   },
-//   imageButton: {
-//     position: 'absolute',
-//     left: 0,
-//     right: 0,
-//     top: 0,
-//     bottom: 0,
-//     display: 'flex',
-//     alignItems: 'center',
-//     justifyContent: 'center',
-//     color: theme.palette.common.white,
-//   },
-//   imageSrc: {
-//     position: 'absolute',
-//     left: 0,
-//     right: 0,
-//     top: 0,
-//     bottom: 0,
-//     backgroundSize: 'cover',
-//     backgroundPosition: 'center 40%',
-//   },
-//   imageBackdrop: {
-//     position: 'absolute',
-//     left: 0,
-//     right: 0,
-//     top: 0,
-//     bottom: 0,
-//     backgroundColor: theme.palette.common.black,
-//     opacity: 0.4,
-//     transition: theme.transitions.create('opacity'),
-//   },
-//   imageTitle: {
-//     position: 'relative',
-//     padding: `${theme.spacing.unit * 2}px ${theme.spacing.unit * 4}px ${theme.spacing.unit + 6}px`,
-//   },
-//   imageMarked: {
-//     height: 3,
-//     width: 18,
-//     backgroundColor: theme.palette.common.white,
-//     position: 'absolute',
-//     bottom: -2,
-//     left: 'calc(50% - 9px)',
-//     transition: theme.transitions.create('opacity'),
-//   },
-// });
-
-// const images = [
-//   {
-//     url: '../images/HeavyJets.jpg',
-//     title: 'Heavy Jets',
-//     width: '40%',
-//   },
-//   {
-//     url: '../images/MidsizeJets.jpg',
-//     title: 'Midsize to Super Midsize Jets',
-//     width: '30%',
-//   },
-//   {
-//     url: '../images/LightJets.jpg',
-//     title: 'Light to Super Light Jets',
-//     width: '30%',
-//   },
-// ];
-
-// function ButtonBases(props) {
-//   const { classes } = props;
-
-//   return (
-//     <div className={classes.root}>
-//       {images.map(image => (
-//         <ButtonBase
-//           focusRipple
-//           key={image.title}
-//           className={classes.image}
-//           style={{
-//             width: image.width,
-//           }}
-//         >
-//           <span
-//             className={classes.imageSrc}
-//             style={{
-//               backgroundImage: `url(${image.url})`,
-//             }}
-//           />
-//           <span className={classes.imageBackdrop} />
-//           <span className={classes.imageButton}>
-//             <Typography
-//               component="span"
-//               variant="subheading"
-//               color="inherit"
-//               className={classes.imageTitle}
-//             >
-//               {image.title}
-//               <span className={classes.imageMarked} />
-//             </Typography>
-//           </span>
-//         </ButtonBase>
-//       ))}
-//     </div>
-
-
-//   );
-// }
-
-// ButtonBases.propTypes = {
-//   classes: PropTypes.object.isRequired,
-// };
-
-// export default withStyles(styles)(ButtonBases);
-
-
-
-//////////////////////////////////////////////////Cards
 import React from 'react';
 import PropTypes from 'prop-types';
 import { withStyles } from 'material-ui/styles';
@@ -582,3 +434,96 @@ RecipeReviewCard.propTypes = {
 };
 
 export default withStyles(styles)(RecipeReviewCard);
+
+// import React from 'react';
+// import PropTypes from 'prop-types';
+// import { withStyles } from 'material-ui/styles';
+// import ExpansionPanel, {
+//   ExpansionPanelDetails,
+//   ExpansionPanelSummary,
+// } from 'material-ui/ExpansionPanel';
+// import Typography from 'material-ui/Typography';
+// import ExpandMoreIcon from 'material-ui-icons/ExpandMore';
+
+// const styles = theme => ({
+//   root: {
+//     flexGrow: 1,
+//   },
+//   heading: {
+//     fontSize: theme.typography.pxToRem(15),
+//     flexBasis: '33.33%',
+//     flexShrink: 0,
+//   },
+//   secondaryHeading: {
+//     fontSize: theme.typography.pxToRem(15),
+//     color: theme.palette.text.secondary,
+//   },
+// });
+
+// class ControlledExpansionPanels extends React.Component {
+//   state = {
+//     expanded: null,
+//   };
+
+//   handleChange = panel => (event, expanded) => {
+//     this.setState({
+//       expanded: expanded ? panel : false,
+//     });
+//   };
+
+//   render() {
+//     const { classes } = this.props;
+//     const { expanded } = this.state;
+
+//     return (
+//       <div className={classes.root}>
+//         <ExpansionPanel expanded={expanded === 'panel1'} onChange={this.handleChange('panel1')}>
+//           <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
+//             <Typography className={classes.heading}>General settings</Typography>
+//             <Typography className={classes.secondaryHeading}>I am an expansion panel</Typography>
+//           </ExpansionPanelSummary>
+//           <ExpansionPanelDetails>
+//             <Typography>
+//               Nulla facilisi. Phasellus sollicitudin nulla et quam mattis feugiat. Aliquam eget
+//               maximus est, id dignissim quam.
+//             </Typography>
+//           </ExpansionPanelDetails>
+//         </ExpansionPanel>
+//         <ExpansionPanel expanded={expanded === 'panel2'} onChange={this.handleChange('panel2')}>
+//           <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
+//             <Typography className={classes.heading}>Users</Typography>
+//             <Typography className={classes.secondaryHeading}>
+//               You are currently not an owner
+//             </Typography>
+//           </ExpansionPanelSummary>
+//           <ExpansionPanelDetails>
+//             <Typography>
+//               Donec placerat, lectus sed mattis semper, neque lectus feugiat lectus, varius pulvinar
+//               diam eros in elit. Pellentesque convallis laoreet laoreet.
+//             </Typography>
+//           </ExpansionPanelDetails>
+//         </ExpansionPanel>
+//         <ExpansionPanel expanded={expanded === 'panel3'} onChange={this.handleChange('panel3')}>
+//           <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
+//             <Typography className={classes.heading}>Advanced settings</Typography>
+//             <Typography className={classes.secondaryHeading}>
+//               Filtering has been entirely disabled for whole web server
+//             </Typography>
+//           </ExpansionPanelSummary>
+//           <ExpansionPanelDetails>
+//             <Typography>
+//               Nunc vitae orci ultricies, auctor nunc in, volutpat nisl. Integer sit amet egestas
+//               eros, vitae egestas augue. Duis vel est augue.
+//             </Typography>
+//           </ExpansionPanelDetails>
+//         </ExpansionPanel>
+//       </div>
+//     );
+//   }
+// }
+
+// ControlledExpansionPanels.propTypes = {
+//   classes: PropTypes.object.isRequired,
+// };
+
+// export default withStyles(styles)(ControlledExpansionPanels);
