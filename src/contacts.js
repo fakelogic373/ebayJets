@@ -130,7 +130,7 @@ export class all extends Component {
     formatListUser(user, i) {
         return (
             <ListItem key={i}>
-                
+
                 {user.username}
 
 
@@ -186,7 +186,7 @@ export class all extends Component {
                 <div style={{ padding: 10, backgroundColor: 'lightgreen' }}>
                     <h2>My contacts List</h2>
                     <List className='DataList'>
-                        <DataList collection={'users/' + db.user._id + '/contacts' } formatListItem={(user, i) => this.formatListUser(user, i)} />
+                        <DataList collection={'users/' + db.user._id + '/contacts'} formatListItem={(user, i) => this.formatListUser(user, i)} />
                     </List>
 
                     <p>Queries:</p>
