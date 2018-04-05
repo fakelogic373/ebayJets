@@ -145,7 +145,7 @@ export class all extends Component {
         const { classes } = this.props;
         return (
             <center>
-                <div style={{ paddingTop: 10 }}>
+                <div style={{ paddingBottom: 20 }}>
                     <Card style={{ maxWidth: 1500 }}>
                         <CardHeader
                             title={<h1>{item.name}</h1>}
@@ -168,14 +168,6 @@ export class all extends Component {
                             <IconButton style={{ width: 200 }}>
                                 <Button style={{ width: 200 }} variant="raised" color="primary" size="small" component={Link} to={`/plane_details/${item._id}`}>View Bids / Details</Button>
                             </IconButton>
-                            
-                                {
-                                    db.user
-                                    &&
-                                    <IconButton style={{ width: 200 }}><Button style={{ width: 100 }} variant="raised" color="primary" size="small" onClick={() => this.handleSelect(item)}>Select</Button></IconButton>
-                                }
-                            
-                            
                                 {
                                     db.user
                                     &&
@@ -183,7 +175,6 @@ export class all extends Component {
                                     &&
                                     <IconButton style={{ width: 100 }}><Button style={{ width: 100 }} variant="raised" color="secondary" size="small" onClick={() => this.handleDelete(item)}>Delete</Button></IconButton>
                                 }
-                            
                         </CardActions>
                         
                     </Card>
@@ -302,30 +293,37 @@ export class details extends Component {
         return (
             this.state.item
             &&
-            <div style={{ padding: 10, backgroundColor: 'lightblue' }}>
+            <center>
+            <div style={{ padding: 10, backgroundColor: 'lightblue', width: '60%' }}>
                 <center>
                     <h1>{this.state.item.name}</h1>
                     <h2>{this.state.item.category}</h2>
+                    {
+                        (this.state.item.imageUrl)
+                        ? 
+                        <img src={this.state.item.imageUrl} width="800" height="500" /> 
+                        :
+                        "No image"
+                    }
                     <h3>Expairy Date: {this.state.item.expiry}</h3>
                     <List className='DataList'>
                         <DataList collection={'items/' + this.state.item._id + '/bids'} formatListItem={(bid, i) => this.formatListItem(bid, i)} />
                     </List>
                 </center>
-                <p>Operations:</p>
                 {
                     db.user
                         ?
-                        <TextField type='number' placeholder='Your Bid' value={this.state.amount} onChange={e => this.setState({ amount: e.target.value })} />
+                        <TextField type='number' placeholder='Enter Your Bid' value={this.state.amount} onChange={e => this.setState({ amount: e.target.value })} />
                         :
                         <p></p>
                 }
                 {
                     db.user
                     &&
-                    <Button variant="raised" color="primary" size="small" style={{ margin: 3, float: 'right' }} onClick={() => this.handleBid()}>Create a bid</Button>
+                    <Button variant="raised" color="primary" size="small" style={{ margin: 3, float: 'right' }} onClick={() => this.handleBid()}>Create a new bid</Button>
                 }
-
             </div>
+            </center>
         )
     }
 }

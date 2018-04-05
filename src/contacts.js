@@ -57,19 +57,11 @@ export class all extends Component {
     formatListUser(user, i) {
         return (
             <ListItem key={i}>
-
                 {user.username}
-
-
                 <ListItemSecondaryAction>
-
-                    <Button variant="raised" color="primary" size="small" onClick={() => this.handleDeleteContact(user.username)} >Remove</Button>
-
-
                     <Button variant="raised" color="primary" size="small" component={Link} to={`/messages/${user.username}`}>Send a message</Button>
-
+                    <Button variant="raised" color="secondary" size="small" onClick={() => this.handleDeleteContact(user.username)} style={{ marginLeft: 5 }}>Remove</Button>
                 </ListItemSecondaryAction>
-
             </ListItem>
         )
     }
@@ -112,12 +104,15 @@ export class all extends Component {
 
     render() {
         return (
-            <div>
-                <div style={{ padding: 10, backgroundColor: 'lightgreen' }}>
-                    <h2>My contacts List</h2>
-                    <List className='DataList'>
-                        <DataList collection={'users/' + db.user._id + '/contacts'} formatListItem={(user, i) => this.formatListUser(user, i)} />
-                    </List>
+            <center>
+            <div style={{ padding: 20, backgroundImage: "url(../images/Birds.jpg)", backgroundSize: 'cover', height: 1600, width: 3060 }}>
+                <div style={{ padding: 10, backgroundColor: '#6fd6fc', width: '60%', borderRadius: 10 }}>
+                    <h1 style={{ fontSize: 50 }}>My Contacts List</h1>
+                    <div style={{ width: '50%' }}>
+                        <List className='DataList'>
+                            <h2><DataList collection={'users/' + db.user._id + '/contacts'} formatListItem={(user, i) => this.formatListUser(user, i)} /></h2>
+                        </List>
+                    </div>
                 </div>
                 {
                     this.state.select
@@ -130,6 +125,7 @@ export class all extends Component {
                         <div></div>
                 }
             </div>
+            </center>
         )
     }
 }

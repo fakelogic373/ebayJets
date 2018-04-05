@@ -138,7 +138,12 @@ export class details extends Component {
             {
                 message.to  == this.props.match.params._id || message.from == this.props.match.params._id
                 ?
-                <p>from: {message.from}, to: {message.to}, Message: {message.content}</p>
+                <p>
+                    Sender: <strong>{message.from}</strong><br />
+                    Reciver: <strong>{message.to}</strong><br />
+                    Message: <strong>{message.content}</strong>
+                    <hr />
+                </p>
                 :
                 console.log()
                 
@@ -164,19 +169,23 @@ export class details extends Component {
         return (
             this.state.user
             &&
-            <div style={{ padding: 10, backgroundColor: 'lightblue' }}>
-                <List className='DataList'>
-                    <DataList collection={'users/' + db.user._id + '/messages'} formatListItem={(message, i) => this.formatListItem(message, i)} />
-                </List>
+            <center>
+                <div style={{ padding: 20, backgroundImage: "url(../images/Birds.jpg)", backgroundSize: 'cover', height: 1600, width: 3060, filter: 'blur' }}>
+                    <div style={{ padding: 10, backgroundColor: '#b7ebff', width: '50%', borderRadius: 10 }}>
+                        <h1 style={{ fontSize: 50 }}>Messaging Page</h1>
+                        <List className='DataList'>
+                            <DataList collection={'users/' + db.user._id + '/messages'} formatListItem={(message, i) => this.formatListItem(message, i)} />
+                        </List>
 
-                <div style={{ padding: 10, backgroundColor: 'white' }}>
+                        <div style={{ padding: 10 }}>
 
-                    <aziz.TextField label='Message' value={this.state.content} onChange={e => this.setState({ content: e.target.value })} />
-                    <br />
-                    <aziz.Button style={{ margin: 3, float: 'right' }} color="primary" variant='raised' onClick={() => this.handleSend()}>Send a message</aziz.Button>
+                            <aziz.TextField label='Message' multiline value={this.state.content} onChange={e => this.setState({ content: e.target.value })} style={{ width: '40%', margin: 15 }} />
+                            <aziz.Button style={{ margin: 15, float: 'center' }} color="primary" variant='raised' onClick={() => this.handleSend()}>Send</aziz.Button>
 
+                        </div>
+                    </div>
                 </div>
-            </div>
+            </center>
         )
     }
 }

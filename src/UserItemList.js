@@ -8,12 +8,14 @@ export default class UserItemList extends Component {
 
     formatListItem(item, i) {
         return (
+            <center>
             <ListItem key={i}>
                 {item.name}, Highbid: {item.highbid ? item.highbid : 'None'}
                 <ListItemSecondaryAction>
                     <Button variant="raised" color="primary" size="small" onClick={() => this.handleExpireNow(item)}>Expire Now</Button>
                 </ListItemSecondaryAction>
             </ListItem>
+            </center>
         )
     }
 
@@ -22,7 +24,7 @@ export default class UserItemList extends Component {
             <ListItem key={i}>
                 {item.name}, Highbid: {item.highbid ? item.highbid : 'None'}
                 <ListItemSecondaryAction>
-                    <Button variant="raised" color="primary" size="small" onClick={() => this.handleDelete(item)}>Delete</Button>
+                    <Button variant="raised" color="secondary" size="small" onClick={() => this.handleDelete(item)}>Delete</Button>
                 </ListItemSecondaryAction>
             </ListItem>
         )
@@ -39,16 +41,20 @@ export default class UserItemList extends Component {
 
     render() {
         return (
-            <div style={{ padding: 10, backgroundColor: 'lightgray' }}>
+            <center>
+                <div style={{ padding: 10, backgroundColor: 'gray', width: '60%', borderRadius: 10 }}>
                 <h2>{this.props.user._id}'s Current Auctions</h2>
                 <List className='DataList'>
                     <DataList collection={'users/' + this.props.user._id + '/items'} formatListItem={(item, i) => this.formatListItem(item, i)} />
                 </List>
+                <div style={{ borderTop: 2 }}>
                 <h2>{this.props.user._id}'s Expired Auctions</h2>
                 <List className='DataList'>
                     <DataList collection={'users/' + this.props.user._id + '/expired'} formatListItem={(item, i) => this.formatListItemExpired(item, i)} />
                 </List>
-            </div>
+                </div>
+                </div>
+            </center>
         )
     }
 }

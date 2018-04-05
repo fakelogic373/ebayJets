@@ -56,12 +56,12 @@ export class all extends Component {
                     {
                         db.user
                         &&
-                        <Button variant="raised" color="primary" size="small" onClick={() => this.handleSelect(user)} style={{ marginLeft: 5 }}>Select</Button>
+                        <Button variant="raised" color="primary" size="small" onClick={() => this.handleSelect(user)}>Select</Button>
                     }
                     {
                         db.user
                         &&
-                        <Button variant="raised" color="secondary" size="small" onClick={() => this.handleDelete(user)} style={{ marginLeft: 5 }}>Delete</Button>
+                        <Button variant="raised" color="secondary" size="small" onClick={() => this.handleDelete(user)}>Delete</Button>
                     }
                 </ListItemSecondaryAction>
 
@@ -99,9 +99,8 @@ export class all extends Component {
     
     render() {
         return (
-            <center>
             <div style={{ padding: 20, backgroundImage: "url(../images/Pilot.jpg)", backgroundSize: 'cover', height: 1600, width: 3065 }}>
-                <div style={{ padding: 10 }}>
+                <div >
                     <center>
                         <div style={{ width: '60%', borderRadius: 5, backgroundColor: 'lightgray', opacity: 0.9 }}>
                             <h1 style={{ fontSize: 50 }}>Users</h1>
@@ -131,7 +130,6 @@ export class all extends Component {
                         <div></div>
                 }
             </div>
-            </center>
         )
     }
 }
@@ -181,12 +179,11 @@ export class details extends Component {
 
     formatListItem(item, i) {
         return (
-            <h2 key={i} style={{  }}>
-                Name: <strong>{item.username}</strong><br />
-                Rating: <strong>{item.rating}/5</strong><br />
-                Feedback: <strong>{item.content}</strong>
-                <hr />
-            </h2>
+            <ListItem key={i}>
+
+                Name : {item.username} , rating:  {item.rating}/5, Message: {item.content}
+
+            </ListItem>
         )
     }
 
@@ -278,56 +275,65 @@ export class details extends Component {
     render() {
 
         return (
-            <center>
-                <div style={{ padding: 20, backgroundImage: "url(../images/Gold.jpg)", backgroundSize: 'cover', height: 1600, width: 3060, filter: 'blur' }}>
-                    <div style={{ padding: 10, backgroundColor: 'gold', width: '60%', borderRadius: 10 }}>
-                        <aziz.Button style={{ margin: 3, float: 'right' }} color="primary" variant='raised' onClick={() => this.handleAddContacts()}>Add this User</aziz.Button>
+            <div>
+                <div style={{ padding: 10, backgroundColor: 'gold' }}>
+                    <aziz.Button style={{ margin: 3, float: 'right' }} color="primary" variant='raised' onClick={() => this.handleAddContacts()}>Add the user</aziz.Button>
 
-                        <h1 style={{ fontSize: 50, paddingLeft: 150 }}>{this.props.match.params._id}'s Profile page</h1>
+                    <h2>{this.props.match.params._id} Profile page</h2>
 
-                        <h1>Gender: {this.state.user.gender}</h1>
-                        <h1>Age: {this.state.user.age}</h1>
+                    <h1>{this.state.user._id}</h1>
+                    <h1>{this.state.user.password}</h1>
 
-                        {/* <List className='DataList'>
+                    {/* <List className='DataList'>
                         <DataList collection={"users/maria@test.com/feedbacks"} formatListItem={(user, i) => this.formatListUser(user, i)} />
-                        </List> */}
+                    </List> */}
 
-                        {/* <DataList collection={'users/' + user._id + '/feedbacks'} formatListItem={(item, i) => <span key={i}>{feedbacks}</span>} /> */}
-                        <div style={{ padding: 10 }}>
-                            <List className='DataList'>
-                                <DataList collection={'users/' + this.props.match.params._id + '/feedbacks'} formatListItem={(item, i) => this.formatListItem(item, i)} />
-                            </List>
-                            <aziz.TextField label='FeedBack' multiline value={this.state.content} onChange={e => this.setState({ content: e.target.value })} style={{ marginRight: 50, width: '40%' }} />
-                            <FormControl >
-                                <InputLabel>Rate</InputLabel>
-                                <Select
-                                    value={this.state.rate}
-                                    onChange={e => this.setState({ rate: e.target.value })}
-                                >
-                                    <MenuItem value={1}>1</MenuItem>
-                                    <MenuItem value={2}>2</MenuItem>
-                                    <MenuItem value={3}>3</MenuItem>
-                                    <MenuItem value={4}>4</MenuItem>
-                                    <MenuItem value={5}>5</MenuItem>
-                                </Select>
-                            </FormControl>
+                    {/* <DataList collection={'users/' + user._id + '/feedbacks'} formatListItem={(item, i) => <span key={i}>{feedbacks}</span>} /> */}
 
-                            <aziz.Button style={{ margin: 3, float: 'right' }} color="primary" variant='raised' onClick={() => this.handleFeedback()}>send the feedback</aziz.Button>
-                        </div>
+                    <List className='DataList'>
+                        <DataList collection={'users/' + this.props.match.params._id + '/feedbacks'} formatListItem={(item, i) => this.formatListItem(item, i)} />
+                    </List>
 
+
+
+
+                    <div style={{ padding: 10, backgroundColor: 'white' }}>
+
+
+                        <FormControl >
+                            <InputLabel>Rate</InputLabel>
+                            <Select
+                                value={this.state.rate}
+                                onChange={e => this.setState({ rate: e.target.value })}
+                            >
+                                <MenuItem value={1}>1</MenuItem>
+                                <MenuItem value={2}>2</MenuItem>
+                                <MenuItem value={3}>3</MenuItem>
+                                <MenuItem value={4}>4</MenuItem>
+                                <MenuItem value={5}>5</MenuItem>
+                            </Select>
+                        </FormControl>
+
+
+                        <br />
+                        <aziz.TextField label='Message' value={this.state.content} onChange={e => this.setState({ content: e.target.value })} />
+                        <br />
+                        <aziz.Button style={{ margin: 3, float: 'right' }} color="primary" variant='raised' onClick={() => this.handleFeedback()}>Give a feedback</aziz.Button>
                     </div>
-                    {
-                        this.state.select
-                            ?
-                            <div>
-                                <UserItemList user={this.state.select} />
-                                <LikedList user={this.state.select} />
-                            </div>
-                            :
-                            <div></div>
-                    }
+
+
                 </div>
-            </center>
+                {
+                    this.state.select
+                        ?
+                        <div>
+                            <UserItemList user={this.state.select} />
+                            <LikedList user={this.state.select} />
+                        </div>
+                        :
+                        <div></div>
+                }
+            </div>
         )
     }
 }

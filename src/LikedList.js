@@ -18,7 +18,7 @@ export default class LikedList extends Component {
             <ListItem key={i}>
                 {item.description} ({item.seller})
                 <ListItemSecondaryAction>
-                    <Button variant="raised" color="primary" size="small" onClick={() => this.handleDelete(item)}>Delete</Button>
+                    <Button variant="raised" color="secondary" size="small" onClick={() => this.handleDelete(item)}>Delete</Button>
                 </ListItemSecondaryAction>
             </ListItem>
         )
@@ -36,7 +36,8 @@ export default class LikedList extends Component {
 
     render() {
         return (
-            <div style={{ padding: 10, backgroundColor: 'gold' }}>
+            <center>
+            <div style={{ padding: 10, backgroundColor: 'darkgray', width: '60%', borderRadius: 10, paddingTop: 10 }}>
                 <h2>{this.props.user._id}'s Likes</h2>
                 <List className='DataList'>
                     <DataList collection={'users/' + this.props.user._id + '/likes'} formatListItem={(item, i) => this.formatListItem(item, i)} />
@@ -51,6 +52,7 @@ export default class LikedList extends Component {
                 </FormControl>
                 <Button variant="raised" color="primary" size="small" style={{ margin: 3, float: 'right' }} onClick={() => this.handleCreate()}>Create</Button>
             </div>
+            </center>
         )
     }
 }

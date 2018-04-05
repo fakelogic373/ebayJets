@@ -53,7 +53,7 @@ export default class App extends Component {
               
               <aziz.Typography style={{ flex: 1 }} variant="title" color="inherit" >
                 <text style={{ paddingLeft: 10 }}>Jets Auction Site</text>
-                <aziz.Button color="inherit" component={Link} to='/products'>Jets</aziz.Button>
+                {/* <aziz.Button color="inherit" component={Link} to='/products'>Jets</aziz.Button> */}
               </aziz.Typography>
               {/* <aziz.Button color="inherit" component={Link} to='/items'>Items</aziz.Button> */}
               <Button color="inherit" component={Link} to='/planes'>planes</Button>
@@ -79,7 +79,7 @@ export default class App extends Component {
               }
             </aziz.Toolbar>
           </aziz.AppBar>
-          <Route exact path="/" component={ItemList} />
+          <Route exact path="/" component={Planes.all} />
           <Route path="/products" component={Products} />
           <Route path="/items" component={ItemList} />
           <Route path="/myitems" render={props => <ItemList my={true} {...props} />} />
